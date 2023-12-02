@@ -1,0 +1,34 @@
+<%- include('../layouts/userHeader.ejs') %>
+<div class="card-body" style="display: flex; justify-content: center;">
+ 
+  
+
+  <form id="editProfileForm" class="mx-5" method="post" action="/updateUser">
+    <input type="hidden" name="user_id"  value="<%=userData._id%>">
+      <table style="width: 31.25rem">
+          <tr>
+              <td><strong>Name <span class="required"></span></strong></td>
+              <td>
+                  <input type="text" name="name" value="<%= userData.name %>" required>
+              </td>
+          </tr>
+
+          <tr>
+              <td><strong>Email Address <span class="required"></span></strong></td>
+              <td>
+                  <input type="email" name="email" value="<%= userData.email %>" required>
+              </td>
+          </tr>
+          <tr>
+              <td><strong>Mobile No. <span class="required"></span></strong></td>
+              <td>
+                  <input type="text" name="mobile" value="<%= userData.mobile %>" required>
+              </td>
+          </tr>
+      </table>
+
+      <div class="col-lg-4">
+          <button type="submit" class="btn btn-secondary" >Save Changes</button>
+      </div>
+  </form>
+</div>

@@ -1,0 +1,28 @@
+<%- include('../layouts/userHeader') %>
+<div class="container w-50 my-5">
+  <h2>Add Address</h2>
+
+  <form id="addAddressForm" method="post" action="/addAddress" style="width: 500px " >
+    <label for="houseName">House Name:</label>
+    <input type="text" id="houseName" name="houseName" required>
+
+    <label for="street">Street:</label>
+    <input type="text" id="street" name="street" required>
+
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" required>
+
+    <label for="pincode">Pincode:</label>
+    <input type="text" id="pincode" name="pincode" required>
+
+    <button type="submit">Add Address</button>
+  </form>
+</div>
+
+ 
+
+<%- include('../layouts/userFooter') %>
+
