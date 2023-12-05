@@ -5,6 +5,7 @@ const categoryController = require('../controllers/admin/categoryController')
 const multer = require("../middlewares/multer")
 const productController = require("../controllers/admin/productController")
 const orderController = require("../controllers/admin/orderController")
+const brandController = require("../controllers/admin/brandController")
 
 const adminAuth = require('../middlewares/adminAuth')
 adminRoute.set("views","./views/admin")
@@ -51,6 +52,19 @@ adminRoute.get("/deleteProduct/:id",adminAuth.isLogin,productController.deletePr
 adminRoute.get("/orders",adminAuth.isLogin,orderController.loadOrders)
 adminRoute.get("/orderList",adminAuth.isLogin,orderController.listOrder)
 adminRoute.get("/orderStatusChange",adminAuth.isLogin,orderController.orderStatusChange)
+
+
+// brand
+
+adminRoute.get("/brand",adminAuth.isLogin,brandController.loadBrand)
+adminRoute.get("/addBrand",adminAuth.isLogin,brandController.loadBrandForm)
+adminRoute.post("/addBrand",multer.uploadCategory.single('image'),adminAuth.isLogin,brandController.addBrand)
+adminRoute.get("/editBrand",adminAuth.isLogin,brandController.loadEditBrand)
+adminRoute.post("/updateBrand",multer.uploadCategory.single('image'),adminAuth.isLogin,brandController.updateBrand)
+adminRoute.get("/listBrand",adminAuth.isLogin,brandController.listBrand)
+adminRoute.get("/unlistBrand",adminAuth.isLogin,brandController.unlistBrand)
+
+
 // logout
 
 adminRoute.get('/logoutAdmin',adminAuth.isLogin,adminController.adminLogout)

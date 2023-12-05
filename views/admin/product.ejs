@@ -127,11 +127,11 @@
 
     const productStock = productStock1.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-    if (productStock !== 0) {
+ 
     %>
         <p class="fw-bold mb-1"><%= productStock %></p>
     <%
-    }
+    
     %>
 </td>
 
@@ -140,20 +140,20 @@
        
             <% if(productStock>20){
                               %>
-                              <span class="  rounded-pill text-bg-success ">
+                              <span class="badge rounded-pill alert-success ">
                                 Published
                                 </span>
                               <%
                             }else if(productStock==0){
                               %>
-                              <span class=" badge rounded-pill text-bg-danger ">
-                               out of stock
-                                </span>
+                              <span class=" badge rounded-pill alert-danger ">
+                        out of stock
+                      </span>
                               <%
                             }
                             else if(productStock<20){
                               %>
-                              <span class="  rounded-pill text-bg-warning ">
+                              <span class="badge rounded-pill alert-warning ">
                               low stock
                                 </span>
                               <%

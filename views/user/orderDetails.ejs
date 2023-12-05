@@ -20,6 +20,9 @@
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<!-- SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 </head>
 
@@ -51,7 +54,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
                     <li class="dropdown nav-item me-4">
-                        <a  class="btn bg-danger" href="/orderCancel?id=<%= order._id %>">cancel</a>
+                        <a class="btn bg-danger" href="#" onclick="confirmCancelOrder('<%= order._id %>')">cancel</a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                             <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Confirmed">Confirmed</a>
                             <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Shipped">Shipped</a>
@@ -187,5 +190,62 @@
         </div>
     </div> 
 </section> 
+
+
+<script>
+    async function confirmCancelOrder(orderId) {
+        try {
+            const result = await Swal.fire({
+                title: 'Confirm Order Cancellation',
+                text: 'Are you sure you want to cancel this order?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Cancel Order',
+                cancelButtonText: 'Cancel',
+            });
+
+            if (result.isConfirmed) {
+                const response = await fetch('/orderCancel?id=' + orderId, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success message
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Order Cancelled Successfully!',
+                        text: 'Click OK to proceed.',
+                        confirmButtonText: 'OK',
+                    });
+
+                    window.location.href = '/orderSuccess';
+                    // Reload the page if needed
+                    // window.location.reload();
+                } else {
+                    // Show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error occurred while cancelling the order.',
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+
+            // Show error message
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error occurred while cancelling the order. Check the console for details.',
+            });
+        }
+    }
+</script>
 
     <%- include('../layouts/adminFooter.ejs') %>

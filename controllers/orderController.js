@@ -170,36 +170,43 @@ const loadOrderHistory = async(req,res)=>{
 
 // cancel order
 
-const cancelOrder = async(req,res)=>{
+const cancelOrder = async (req, res) => {
     try {
-        const userId  = req.session.user_id
-        const orderId = req.query.id
-        const userData = await User.findById(userId)
+        const userId = req.session.user_id;
+        const orderId = req.query.id;
+        const userData = await User.findById(userId);
 
-        const order = await Order.find({_id:orderId})
-        .populate("user")
-        .populate({
-            path:"address",
-            model:"Address",
-        }).populate({
-            path:"items.product",
-            model:"Product"
-        })
+        const order = await Order.find({ _id: orderId })
+            .populate("user")
+            .populate({
+                path: "address",
+                model: "Address",
+            })
+            .populate({
+                path: "items.product",
+                model: "Product",
+            });
 
-        const updateOrder = await Order.findByIdAndUpdate({_id:orderId},{
-            $set:{
-                status:"cancelled"
+        const updateOrder = await Order.findByIdAndUpdate(
+            { _id: orderId },
+            {
+                $set: {
+                    status: "cancelled",
+                },
             }
-        })
+        );
 
-        res.redirect("/orderSuccess")
+        // Send success JSON response
+        res.json({ success: true });
 
-
-        
     } catch (error) {
         console.log(error.message);
+
+        // Send error JSON response
+        res.status(500).json({ success: false, error: error.message });
     }
-}
+};
+
 
 
 
