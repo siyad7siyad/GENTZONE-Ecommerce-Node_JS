@@ -207,18 +207,34 @@ const userLogout = async (req, res) => {
 
 //Load the product list at userside 
 
-const loadItems = async(req,res)=>{
-  try {
-    const userData = req.session.user_id
-    const productData = await Product.find()
-    const categoryData = await Category.find()
+const ITEMS_PER_PAGE = 6; // Adjust the number based on your preference
 
-    res.render("user/items",{user: userData,products:productData,category:categoryData})
-    
+const loadItems = async (req, res) => {
+  try {
+    const userData = req.session.user_id;
+    const page = parseInt(req.query.page) || 1;
+
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+
+    const productData = await Product.find()
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE);
+
+    const categoryData = await Category.find();
+
+    res.render("user/items", {
+      user: userData,
+      products: productData,
+      category: categoryData,
+      currentPage: page,
+      totalPages: totalPages,
+    });
   } catch (error) {
     console.log(error.message);
   }
-}
+};
+
 
 const sortedAscending = async(req,res)=>{
   try {

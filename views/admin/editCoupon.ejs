@@ -1,0 +1,54 @@
+<%- include('../layouts/adminHeader.ejs') %>
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header col-8">
+                <h2 class="content-title">Edit Coupon</h2>
+                <div>
+                    
+
+                        
+                   
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form action="/admin/updateCount" method="post" >
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Coupon Id</label>
+                            <input type="text" placeholder="Type here" name="couponId" class="form-control" value="<%= coupon.couponId %>"  id="product_title">
+                            <input type="hidden" name="coupon_id" value="<%= coupon && coupon._id %>" >
+                        </div>
+                        <div class="row gx-3">
+                            <div class="mb-4">
+                                <label for="product_title" class="form-label">Description</label>
+                                <input type="text" placeholder="Type here" name="description" class="form-control" value="<%= coupon.description %>" id="product_title">
+                            </div>
+                            <div class="col-md-4  mb-3">
+                                <label for="product_color" class="form-label">Offer Price</label>
+                                <input type="number" placeholder="Type here" name="offerPrice" class="form-control"value="<%= coupon.offerPrice %>"  id="product_color">
+                            </div>
+                            <div class="col-md-4  mb-3">
+                                <label for="product_size" class="form-label">Minimum Amount</label>
+                                <input type="number" name="minimumAmount" placeholder="Type here" class="form-control" value="<%= coupon.minimumAmount %>"  id="product_size">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_brand" class="form-label">Expiry Date</label>
+                            <input type="date" placeholder="Type here" name="expiryDate" class="form-control" value="<%= coupon.expiryDate %>"  id="product_brand">
+                        </div>
+                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Update Coupon</button>
+                    </form>
+                    </div>
+                </div> <!-- card end// -->
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<%- include('../layouts/adminFooter.ejs') %>

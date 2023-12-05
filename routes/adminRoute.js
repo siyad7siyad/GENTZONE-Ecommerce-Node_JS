@@ -6,6 +6,7 @@ const multer = require("../middlewares/multer")
 const productController = require("../controllers/admin/productController")
 const orderController = require("../controllers/admin/orderController")
 const brandController = require("../controllers/admin/brandController")
+const couponController = require("../controllers/admin/couponController")
 
 const adminAuth = require('../middlewares/adminAuth')
 adminRoute.set("views","./views/admin")
@@ -63,6 +64,15 @@ adminRoute.get("/editBrand",adminAuth.isLogin,brandController.loadEditBrand)
 adminRoute.post("/updateBrand",multer.uploadCategory.single('image'),adminAuth.isLogin,brandController.updateBrand)
 adminRoute.get("/listBrand",adminAuth.isLogin,brandController.listBrand)
 adminRoute.get("/unlistBrand",adminAuth.isLogin,brandController.unlistBrand)
+
+// coupon
+
+adminRoute.get("/loadCoupon",adminAuth.isLogin,couponController.loadCoupon)
+adminRoute.get("/addCoupon",adminAuth.isLogin,couponController.loadAddCoupon)
+adminRoute.post("/addCoupon",couponController.addCoupon)
+adminRoute.get("/EditCoupon",adminAuth.isLogin,couponController.loadEditCoupon)
+adminRoute.post("/updateCount",couponController.updateCoupon)
+adminRoute.get("/deleteCoupon/:id",adminAuth.isLogin,couponController.deleteCoupon)
 
 
 // logout

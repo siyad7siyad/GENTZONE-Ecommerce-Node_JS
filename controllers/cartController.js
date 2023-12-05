@@ -115,7 +115,7 @@ const addToCart = async(req,res)=>{
 
         }
 
-        res.redirect("/cart")
+        res.redirect("/items")
         
 
         
