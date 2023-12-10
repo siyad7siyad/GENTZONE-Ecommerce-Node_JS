@@ -53,8 +53,14 @@
                     <small class="text-muted">Order ID: 3453012</small>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                    <% if (order.status=="Confirmed" ) {
+                        %>  <button type="button" class="btn btn-primary" onclick="confirmCancelOrder('<%= order._id %>')">Cancel</button> <%
+                     } else if (order.status=="Delivered") {
+                         %>  <button type="button" class="btn btn-primary" onclick="returnProduct('<%= order._id %>')">Return</button> <%
+                     } %>     
                     <li class="dropdown nav-item me-4">
-                        <a class="btn bg-danger" href="#" onclick="confirmCancelOrder('<%= order._id %>')">cancel</a>
+               
+                       
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                             <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Confirmed">Confirmed</a>
                             <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Shipped">Shipped</a>
@@ -71,6 +77,12 @@
                 </div>
             </div>
         </header>
+
+
+
+
+
+
         <div class="card-body">
             <div class="row mb-50 mt-20 order-info-wrap">
                 <div class="col-md-4">
@@ -225,7 +237,7 @@
 
                     window.location.href = '/orderSuccess';
                     // Reload the page if needed
-                    // window.location.reload();
+                
                 } else {
                     // Show error message
                     Swal.fire({
@@ -248,4 +260,68 @@
     }
 </script>
 
-    <%- include('../layouts/adminFooter.ejs') %>
+
+<script>
+    async function returnProduct(orderId) {
+        try {
+            const result = await Swal.fire({
+                title: 'Confirm Return Order',
+                text: 'Are you sure you want to Return the order?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Return Order',
+                cancelButtonText: 'Cancel',
+            });
+
+            if (result.isConfirmed) {
+                const response = await fetch('/returnOrder?id=' + orderId, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success message
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Return Order Successfully!',
+                        text: 'Click OK to proceed.',
+                        confirmButtonText: 'OK',
+                    });
+
+                    window.location.href = '/orderSuccess';
+                    // Reload the page if needed
+                
+                } else {
+                    // Show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error occurred while Return The order.',
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+
+            // Show error message
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error occurred while Return the order. Check the console for details.',
+            });
+        }
+    }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+

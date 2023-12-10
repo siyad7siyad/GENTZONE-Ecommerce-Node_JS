@@ -3,22 +3,21 @@ const User = require("../../model/userModel")
 
 // load coupon 
 
-const loadCoupon = async(req,res)=>{
-    try {
-        const coupon = await Coupon.find()
-        res.render("coupon",{coupon})
-        
-    } catch (error) {
-        console.log("error to load coupon page",error);
-    }
-}
+    const loadCoupon = async (req, res) => {
+        try {
+            const coupons = await Coupon.find();
+            res.render("coupon", { coupons: coupons }); // Change 'coupon' to 'coupons'
+        } catch (error) {
+            console.log("error to load coupon page", error);
+        }
+    };
 
 // load ADD coupon
 
 
 const loadAddCoupon = async(req,res)=>{
     try {
-
+        const coupon= await Coupon.find()
       
         res.render("addCoupon")
         
@@ -30,39 +29,35 @@ const loadAddCoupon = async(req,res)=>{
 
 // post coupon
 
-const addCoupon = async (req, res) => {
-    try {
-        if (!req.body.couponId || !req.body.description || !req.body.offerPrice) {
-            return res.render("addCoupon");
+    const addCoupon = async (req, res) => {
+        try {
+            const { couponCode, discountPercentage, expiryDate } = req.body;
+
+            // Check if the coupon code already exists
+            const existingCoupon = await Coupon.findOne({ couponCode });
+
+            if (existingCoupon) {
+                // Coupon code already exists, respond with an error
+                return res.status(400).json({ success: false, message: 'Coupon code already exists.' });
+            }
+
+            // Coupon code does not exist, proceed with adding the coupon
+            const coupon = new Coupon({
+                couponCode,
+                discountPercentage,
+                expiryDate
+            });
+
+            await coupon.save();
+
+            // Respond with success
+            return res.status(200).json({ success: true, message: 'Coupon added successfully.' });
+        } catch (error) {
+            console.log(error.message);
+            // Handle other errors
+            res.status(500).json({ success: false, message: 'Internal Server Error' });
         }
-        console.log("dhgfgghjghjg");
-
-        let customExpiryDate = new Date(req.body.expiryDate);
-
-        if (isNaN(customExpiryDate.getTime())) {
-            const currentMonth = new Date().getMonth();
-            const newExpiryDate = new Date();
-            newExpiryDate.setMonth(currentMonth + 1);
-            customExpiryDate = newExpiryDate;
-        }   
-
-        const coupon = new Coupon({
-            couponId: req.body.couponId,
-            description: req.body.description,
-            offerPrice: req.body.offerPrice,
-            minimumAmount: req.body.minimumAmount,
-            createdOn: Date.now(),
-            expiryDate: customExpiryDate,
-        });
-
-        const couponData = await coupon.save();
-        console.log(coupon,"aaa");
-        res.redirect("/admin/loadCoupon");
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
+    };
 // load edit Coupon
 
 const loadEditCoupon = async(req,res)=>{
@@ -120,7 +115,7 @@ const updateCoupon = async(req,res)=>{
 
             const id = req.params.id
             console.log(id);
-            const coupon = await Coupon.findByIdAndUpdate(
+            const coupon = await Coupon.findByIdAndDelete(
                 {_id:id}, { $set: { is_listed: false } });
 
 
@@ -136,6 +131,8 @@ const updateCoupon = async(req,res)=>{
         
         }
     }
+
+
 
 
 module.exports = {

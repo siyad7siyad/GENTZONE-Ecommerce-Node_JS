@@ -6,6 +6,8 @@ const userAuth = require('../middlewares/userAuth')
 const multer = require("../middlewares/multer")
 const cartController = require("../controllers/cartController")
 const orderController = require("../controllers/orderController")
+const wishlistController = require("../controllers/whishlistController")
+const couponController = require("../controllers/admin/couponController")
 // registration
 
 userRoute.get('/register',userAuth.isLogout,userController.loadRegister)
@@ -49,15 +51,21 @@ userRoute.delete("/removeCartItem",cartController.removeFromCart)
 // checkout
 userRoute.get("/checkOut",orderController.loadCheckOut)
 userRoute.post("/checkOut",orderController.checkOutPost)
+userRoute.post("/razorPay",orderController.razorPayLoad)
 userRoute.get("/orderSuccess",orderController.loadOrderDetails)
 userRoute.get("/orderDetails/:id",orderController.loadOrderHistory)
 userRoute.get("/orderCancel",orderController.cancelOrder)
+userRoute.get("/returnOrder",orderController.returnOrder)
+
+// wishlist
+
+userRoute.get("/loadWishList",wishlistController.loadWishlist)
+userRoute.post("/addWishList",wishlistController.addToWishList)
+userRoute.delete("/removeWishlist",wishlistController.removeWishlist)
 
 
-
-
-
-
+// COUPON
+userRoute.post("/validateCoupon",orderController.applyCoupon)
 
 
 // forget password

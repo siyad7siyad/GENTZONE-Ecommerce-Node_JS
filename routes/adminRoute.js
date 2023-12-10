@@ -75,6 +75,7 @@ adminRoute.post("/updateCount",couponController.updateCoupon)
 adminRoute.get("/deleteCoupon/:id",adminAuth.isLogin,couponController.deleteCoupon)
 
 
+
 // logout
 
 adminRoute.get('/logoutAdmin',adminAuth.isLogin,adminController.adminLogout)

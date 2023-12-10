@@ -1,5 +1,24 @@
 <%- include('../layouts/userHeader.ejs') %>
+<div class="col-lg-6">
+    <div class="toggle_info">
+        <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+    </div>
+    <div class="panel-collapse collapse coupon_form " id="coupon">
+        <div class="panel-body">
+            <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+            <form method="post" action="/validateCoupon">
+                <div class="form-group">
+                    <input type="text" placeholder="Enter Coupon Code..." id="couponInput" name="couponCode">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-md" type="button" onclick="applyCoupon()">Apply Coupon</button>
 
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
@@ -31,7 +50,7 @@
                                     </div>
                                     <div class="login_footer form-group">
                                         <div class="chek-form">
-                                       
+
                                         </div>
                                         <a href="#">Forgot password?</a>
                                     </div>
@@ -42,24 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <!-- <div class="toggle_info">
-                        <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
-                    </div> -->
-                        <div class="panel-collapse collapse coupon_form " id="coupon">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Coupon Code...">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -117,8 +119,9 @@
 
 
                                                 <div class="">
-                                  
-<input type="radio" value="<%= address._id %>" name="checkAddress" id="addressradio">
+
+                                                    <input type="radio" value="<%= address._id %>" name="checkAddress"
+                                                        id="addressradio">
 
                                                 </div>
                                             </div>
@@ -137,7 +140,9 @@
                                 <% }); %>
                         </div>
 
-                        <form action="/addAddress" method="post"  onsubmit="return validationChecking()">
+                        
+
+                        <form action="/addAddress" method="post" onsubmit="return validationChecking()">
 
 
 
@@ -154,6 +159,13 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+
+
+
+                
+
                                 <div id="collapseAddress" class="different_address collapse in">
                                     <div class="row">
 
@@ -164,28 +176,30 @@
 
 
                                         <div class="form-group">
-                        <input type="text" id="houseName" name="houseName" placeholder="Enter Name" />
-                        <div id="errorhouseName" class="ms-2 text-danger"></div>
-                      </div>
-                      <div class="form-group ">
-                        <input type="text" id="street" name="street" placeholder="Enter street" />
-                        <div id="errorstreet" class="ms-2 text-danger"></div>
-                      </div>
-                      <div class="form-group ">
-                        <input type="text" id="city" name="city" placeholder="Enter city" />
-                        <div id="errorcity" class="ms-2 text-danger"></div>
-                      </div>
+                                            <input type="text" id="houseName" name="houseName"
+                                                placeholder="Enter Name" />
+                                            <div id="errorhouseName" class="ms-2 text-danger"></div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <input type="text" id="street" name="street" placeholder="Enter street" />
+                                            <div id="errorstreet" class="ms-2 text-danger"></div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <input type="text" id="city" name="city" placeholder="Enter city" />
+                                            <div id="errorcity" class="ms-2 text-danger"></div>
+                                        </div>
 
-                      <div class="row">
-                        <div class="form-group col-md-6">
-                          <input type="text" id="state" name="state" placeholder="Enter state" />
-                          <div id="errorstate" class="ms-2 text-danger"></div>
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" id="pincode" name="pincode" placeholder="Enter pincode" />
-                          <div id="errorpincode" class="ms-2 text-danger"></div>
-                        </div>
-                      </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <input type="text" id="state" name="state" placeholder="Enter state" />
+                                                <div id="errorstate" class="ms-2 text-danger"></div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="text" id="pincode" name="pincode"
+                                                    placeholder="Enter pincode" />
+                                                <div id="errorpincode" class="ms-2 text-danger"></div>
+                                            </div>
+                                        </div>
                                     </div>
 
 
@@ -198,6 +212,9 @@
 
                         </form>
                     </div>
+                 
+
+
                     <div class="col-md-6">
                         <div class="order_review">
                             <div class="mb-20">
@@ -265,43 +282,60 @@
                                 <div class="mb-25">
                                     <h5>Payment</h5>
                                 </div>
-                              
-                                    <div class="payment_option">
-    <div class="custome-radio">
-        <input class="form-check-input" value="CashOnDelivery" required="" type="radio" name="payment_option" id="exampleRadios1" checked="">
-        <label class="form-check-label" for="exampleRadios1" data-bs-toggle="collapse" data-target="#CashOnDelivery1" aria-controls="CashOnDelivery1">Cash On Delivery</label>
-    </div>
-   
-</div>
-                                
-                             
+
+                                <div class="payment_option">
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" value="CashOnDelivery" required="" type="radio"
+                                            name="payment_option" id="exampleRadios1" >
+                                        <label class="form-check-label" for="exampleRadios1" data-bs-toggle="collapse"
+                                            data-target="#CashOnDelivery" aria-controls="CashOnDelivery">Cash On
+                                            Delivery</label>
+                                    </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" value="onlinePayment" required="" type="radio"
+                                            name="payment_option" id="exampleRadios2">
+                                        <label class="form-check-label" for="exampleRadios2" data-bs-toggle="collapse"
+                                            data-target="#onlinePayment" aria-controls="onlinePayment">online
+                                            Payment</label>
+                                    </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" value="wallet" required="" type="radio"
+                                            name="payment_option" id="exampleRadios3">
+                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse"
+                                            data-target="#wallet" aria-controls="wallet">Wallet
+                                           </label>
+                                    </div>
+
+                                </div>
+
+
                             </div>
 
                             <style>
-  #btn_checkout {
-    display: inline-block;
-    margin-top: 30px;
-    text-align: center;
-  }
+                                #btn_checkout {
+                                    display: inline-block;
+                                    margin-top: 30px;
+                                    text-align: center;
+                                }
 
-  #btn_checkout button {
-    background-color: #3085d6;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
+                                #btn_checkout button {
+                                    background-color: #3085d6;
+                                    color: #fff;
+                                    padding: 10px 20px;
+                                    border: none;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    font-size: 16px;
+                                    transition: background-color 0.3s ease;
+                                }
 
-  #btn_checkout button:hover {
-    background-color: #1f5a99;
-  }
-</style>
-<a href="#" id="btn_checkout">
-  <button>Place Order</button>
-</a>
+                                #btn_checkout button:hover {
+                                    background-color: #1f5a99;
+                                }
+                            </style>
+                            <a href="#" id="btn_checkout">
+                                <button>Place Order</button>
+                            </a>
 
 
                         </div>
@@ -310,166 +344,300 @@
             </div>
         </section>
     </main>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+    <script>
+    // Assuming you've included SweetAlert2 library in your HTML file
 
-<script>
-// Assuming you've included SweetAlert2 library in your HTML file
+    let btn_checkout = document.getElementById('btn_checkout');
+    btn_checkout.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default behavior of the anchor link
 
-let btn_checkout = document.getElementById('btn_checkout');
-btn_checkout.addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent the default behavior of the anchor link
+        placeOrder();
+    });
 
-    placeOrder();
-});
+    function placeOrder() {
+        const selectedAddress = document.getElementById('addressradio').value;
+        let selectedPaymentMethod = document.querySelector('input[name="payment_option"]:checked').value;
 
-function placeOrder() {
-    const selectedAddress = document.getElementById('addressradio').value;
-    let selectedPaymentMethod = document.querySelector('input[name="payment_option"]:checked').value;
+        if (!selectedAddress) {
+            alert('Please select an address.');
+            return;
+        }
 
-    if (!selectedAddress) {
-        alert('Please select an address.');
-        return;
-    }
+        const address = selectedAddress;
+        const requestData = {
+            address: address,
+            paymentMethod: selectedPaymentMethod,
+        };
 
-    const address = selectedAddress;
-    const requestData = {
-        address: address,
-        paymentMethod: selectedPaymentMethod,
-    };
-
-    // Use SweetAlert2 to confirm the order
-    Swal.fire({
-        title: 'Confirm Order',
-        text: 'Are you sure you want to place the order?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, Place Order',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // If user clicks "Yes, Place Order", then proceed with the fetch request
-            fetch('/checkOut', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Show SweetAlert2 success message
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Order Placed Successfully!',
-                            text: 'Click OK to proceed to order success page.',
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Redirect to order success page
-                                window.location.href = '/orderSuccess';
-                            }
-                        });
-                    } else {
-                        // Show SweetAlert2 error message
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Error occurred while placing order.',
-                        });
-                    }
+        // Use SweetAlert2 to confirm the order
+   
+            if (selectedPaymentMethod == "onlinePayment") {
+                console.log("BDHGSDHJKSDHKJHDJK");
+                fetch('/razorPay', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Show SweetAlert2 error message
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Razorpay Response:", data);
+
+                        if (data && data.success) {
+                            console.log("Success: Razorpay order created successfully");
+
+                            const options = {
+                                key: "rzp_test_44UydPbnSvDtHK",
+                                amount: data.order.amount,
+                                currency: "INR",
+                                name: "gentzone.in",
+                                description: "Payment for Your Order",
+                                order_id: data.order.id,
+                                handler: async function (response) {
+                                    console.log("Payment successful:", response);
+
+                                    if (response.razorpay_payment_id) {
+                                        const createOrderResponse = await fetch("/checkOut", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
+                                            body: JSON.stringify(requestData),
+                                        });
+
+                                        const orderData = await createOrderResponse.json();
+
+                                        if (orderData.success) {
+                                            console.log("Order created successfully");
+                                            window.location.href = "/orderSuccess";
+                                        } else {
+                                            console.error("Error in order creation:", orderData.error);
+                                            alert("Error occurred while creating the order");
+                                        }
+                                    }
+                                },
+                                prefill: {
+                                    name: "genzone",
+                                    email: "siyad@gmail.com",
+                                    contact: "7736711807",
+                                },
+                                notes: {
+                                    address: "Razorpay Corporate Office",
+                                },
+                                theme: {
+                                    color: "#3399cc",
+                                },
+                            };
+
+                            const rzp = new Razorpay(options);
+                            rzp.open();
+                        } else {
+                            // Handle error in Razorpay order creation
+                            console.error("Error in Razorpay order creation:", data ? data.error : "Unknown error");
+                            alert("Error occurred while creating the Razorpay order");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error occurred while placing order');
+                    });
+            } else  if (selectedPaymentMethod == "CashOnDelivery"  ) {
+                fetch('/checkOut', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if (data.success) {
+
+                            Swal.fire({
+                                title: "Success",
+                                text: data.message,
+                                icon: "success",
+                                timer: 2000,
+                                timeProgressBar: true,
+                                showConfirmButton: true,
+                            }).then(() => {
+                                // Redirect after displaying the success message
+                                window.location.href = '/orderSuccess';
+                            });
+                        } else {
+                            Swal.fire("Error!", "Failed to perform the action", "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error occurred while placing order');
+                    });
+            }else  if (selectedPaymentMethod == "wallet" ) {
+                fetch('/checkOut', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if (data.success) {
+
+                            Swal.fire({
+                                title: "Success",
+                                text: data.message,
+                                icon: "success",
+                                timer: 2000,
+                                timeProgressBar: true,
+                                showConfirmButton: true,
+                            }).then(() => {
+                                // Redirect after displaying the success message
+                                window.location.href = '/orderSuccess';
+                            });
+                        } else {
+                            Swal.fire("Error!", "Insufficient balance", "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error occurred while placing order');
+                    });
+            }
+       ;
+    }
+</script>
+
+
+
+
+
+
+
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const houseName = document.getElementById("houseName");
+            const errorhouseName = document.getElementById("errorhouseName");
+            const street = document.getElementById("street");
+            const errorstreet = document.getElementById("errorstreet");
+            const city = document.getElementById("city");
+            const errorcity = document.getElementById("errorcity");
+            const state = document.getElementById("state");
+            const errorstate = document.getElementById("errorstate");
+            const pincode = document.getElementById("pincode");
+            const errorpincode = document.getElementById("errorpincode");
+
+            houseName.addEventListener('input', function () {
+                errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
+            });
+            street.addEventListener('input', function () {
+                errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
+            });
+            city.addEventListener('input', function () {
+                errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
+            });
+            state.addEventListener('input', function () {
+                errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
+            });
+
+            pincode.addEventListener('input', function () {
+                errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter  number" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid  number" : "";
+            });
+
+
+        });
+        function validationChecking() {
+            const houseName = document.getElementById("houseName");
+            const errorhouseName = document.getElementById("errorhouseName");
+            const street = document.getElementById("street");
+            const errorstreet = document.getElementById("errorstreet");
+            const city = document.getElementById("city");
+            const errorcity = document.getElementById("errorcity");
+            const state = document.getElementById("state");
+            const errorstate = document.getElementById("errorstate");
+            const pincode = document.getElementById("pincode");
+            const errorpincode = document.getElementById("errorpincode");
+
+            let isValid = true;
+
+            errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
+            errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
+            errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
+            errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
+            errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid pincode" : "";
+
+            if (
+                errorhouseName.innerHTML ||
+                errorstreet.innerHTML ||
+                errorcity.innerHTML ||
+                errorstate.innerHTML ||
+                errorpincode.innerHTML
+            ) {
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+    <script>
+    function applyCoupon() {
+        console.log('applyCoupon');
+        // Assuming you're using Fetch API or similar for form submission
+        const couponCode = document.getElementById('couponInput').value;
+
+        fetch('/validateCoupon', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ couponCode }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Coupon applied successfully, display SweetAlert and redirect
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Coupon Applied',
+                        text: 'Your coupon has been applied successfully!',
+                    }).then(() => {
+                        // Redirect after the user clicks OK in SweetAlert
+                        window.location.href = '/checkOut';
+                    });
+                } else {
+                    // Display SweetAlert with the error message
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        text: 'Error occurred while placing order.',
+                        title: 'Oops...',
+                        text: data.error,
                     });
-                });
-        }
-    });
-}
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+    }
 </script>
 
-
-
-
-
-
-</script>
-        <script>
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  const houseName = document.getElementById("houseName");
-  const errorhouseName = document.getElementById("errorhouseName");
-  const street = document.getElementById("street");
-  const errorstreet = document.getElementById("errorstreet");
-  const city = document.getElementById("city");
-  const errorcity = document.getElementById("errorcity");
-  const state = document.getElementById("state");
-  const errorstate = document.getElementById("errorstate");
-  const pincode = document.getElementById("pincode");
-  const errorpincode = document.getElementById("errorpincode");
-
-  houseName.addEventListener('input', function () {
-    errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
-  });
-  street.addEventListener('input', function () {
-    errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
-  });
-  city.addEventListener('input', function () {
-    errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
-  });
-  state.addEventListener('input', function () {
-    errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
-  });
-
-  pincode.addEventListener('input', function () {
-    errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter  number" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid  number" : "";
-  });
-
-
-});
-function validationChecking() {
-  const houseName = document.getElementById("houseName");
-  const errorhouseName = document.getElementById("errorhouseName");
-  const street = document.getElementById("street");
-  const errorstreet = document.getElementById("errorstreet");
-  const city = document.getElementById("city");
-  const errorcity = document.getElementById("errorcity");
-  const state = document.getElementById("state");
-  const errorstate = document.getElementById("errorstate");
-  const pincode = document.getElementById("pincode");
-  const errorpincode = document.getElementById("errorpincode");
-
-  let isValid = true;
-
-  errorhouseName.innerHTML = houseName.value.trim() === "" ? "Please enter home name" : /^[a-zA-Z ]+$/.test(houseName.value) == false ? "Please enter alphabets only" : "";
-  errorstreet.innerHTML = street.value.trim() === "" ? "Please enter street name" : /^[a-zA-Z ]+$/.test(street.value) == false ? "Please enter alphabets only" : "";
-  errorcity.innerHTML = city.value.trim() === "" ? "Please enter city name" : /^[a-zA-Z ]+$/.test(city.value) == false ? "Please enter alphabets only" : "";
-  errorstate.innerHTML = state.value.trim() === "" ? "Please enter state name" : /^[a-zA-Z ]+$/.test(state.value) == false ? "Please enter alphabets only" : "";
-  errorpincode.innerHTML = pincode.value.trim() === "" ? "Please enter pincode" : /^\d{6}$/.test(pincode.value) == false ? "Please enter valid pincode" : "";
-
-  if (
-    errorhouseName.innerHTML ||
-    errorstreet.innerHTML ||
-    errorcity.innerHTML ||
-    errorstate.innerHTML ||
-    errorpincode.innerHTML
-  ) {
-    isValid = false;
-  }
-
-  return isValid;
-}
-
-
-
-
-
-
-</script>
     <%- include('../layouts/userFooter.ejs') %>

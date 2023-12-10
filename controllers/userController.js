@@ -6,6 +6,7 @@ const Category = require('../model/categoryModel');
 const Address = require("../model/addressModel")
 const { AwsPage } = require("twilio/lib/rest/accounts/v1/credential/aws");
 const multer = require("../middlewares/multer")
+const Cart = require("../model/cartModel")
 
 
 const securePassword = async (password) => {
@@ -264,20 +265,29 @@ const sortDescending = async(req,res)=>{
 
 // load single product details
 
-const singleItems = async(req,res)=>{
+const singleItems = async (req, res) => {
   try {
-    const userData = await User.findById({_id:req.session.user_id})
+    const userData = await User.findById({ _id: req.session.user_id })
     const id = req.query.id
-    const productData = await Product.findById({_id:id})
+    const productData = await Product.findById({ _id: id })
 
-    res.render("user/singleItems",{user:userData,products:productData})
+    let existingCartItem = false;
 
+    const existingCart = await Cart.findOne({ user: req.session.user_id }) // Use req.session.user_id to find the cart for the current user
+    if (existingCart) {
+       existingCartItem = existingCart.items.find((item) => item.product.toString() === id)
+      if (existingCartItem) {
+        // If the item exists in the cart, set existingCartItem to true
+        existingCartItem = true;
+      }
+    }
 
-    
+    res.render("user/singleItems", { user: userData, products: productData, existingCartItem })
   } catch (error) {
     console.log(error.message);
   }
 }
+
 
 // user profile
 

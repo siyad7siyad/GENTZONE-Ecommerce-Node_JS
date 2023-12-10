@@ -29,8 +29,12 @@ const user = mongoose.Schema({
   image:{
     type:String,
    
-  }
+  },
+  walletBalance:{
+    type:Number,
+    default:0
+  },
 
 })
 
-module.exports = mongoose.model("User",user)
+module.exports = mongoose.model("User",user)  

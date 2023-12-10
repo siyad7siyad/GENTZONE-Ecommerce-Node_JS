@@ -154,88 +154,113 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="account-detail" role="tabpanel"
-                                        aria-labelledby="account-detail-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Account Details</h5>
-                                            </div>
-                                            <div class="card-body" style="display: flex;">
-                                                
-                                                <aside class="col-lg-2">
-                                                    <figure class="text-lg-center">
-                                                        <% if (user.image) { %>
-                                                            <img class="img-lg mb-3 img-avatar" id="previewImage" src="/userassets/images/<%= user.image %>" alt="User Photo">
-                                                        <% } else { %>
-                                                            <img class="img-lg mb-3 img-avatar" id="previewImage" src="/userassets/images/Artboard 1.png" alt="User Photo">
-                                                        <% } %>
-                                                        <figcaption>
-                                             
+                                            aria-labelledby="account-detail-tab">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>Account Details</h5>
+                                                </div>
 
-                                                                <form action="/updateProfile?id=<%= user._id%>" method="post" enctype="multipart/form-data">
-   
-                                                                <input type="file" name="image" id="fileUpload" style="display: none;">
-                                                                <label type="submit" for="fileUpload" class="btn btn-light rounded font-md">
-                                                                    <i class="icons material-icons md-backup font-md"></i>
-                                                                    Upload
-                                                                </label>
 
-                                                                <button type="submit" class="btn btn-success">Save</button>
-                                                            </form>
-                                                           
-                                                            <!-- <input type="hidden" name="image" value="<%=user.image %>"> -->
-                                                        </figcaption>
-                                                    </figure>
-                                                </aside>
+
+                                                <div class="card-body" style="display: flex;">
+                                                    
+                                                    <aside class="col-lg-2">
+                                                        <figure class="text-lg-center">
+                                                            <% if (user.image) { %>
+                                                                <img class="img-lg mb-3 img-avatar" id="previewImage" src="/userassets/images/<%= user.image %>" alt="User Photo">
+                                                            <% } else { %>
+                                                                <img class="img-lg mb-3 img-avatar" id="previewImage" src="/userassets/images/Artboard 1.png" alt="User Photo">
+                                                            <% } %>
+                                                            <figcaption>
                                                 
 
-                                                <table class="mx-5">
-                                                    <tr>
-                                                        <td><strong> Name <span class="required"></span></strong>
-                                                        </td>
-                                                        <td>
-                                                            <%= user.name %>
-                                                        </td>
-                                                    </tr>
+                                                                    <form action="/updateProfile?id=<%= user._id%>" method="post" enctype="multipart/form-data">
+    
+                                                                    <input type="file" name="image" id="fileUpload" style="display: none;">
+                                                                    <label type="submit" for="fileUpload" class="btn btn-light rounded font-md">
+                                                                        <i class="icons material-icons md-backup font-md"></i>
+                                                                        Upload
+                                                                    </label>
 
-                                                    <tr>
-                                                        <td><strong>Email
-                                                                Address <span class="required"></span></strong></td>
-                                                        <td>
-                                                            <%= user.email %>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>Mobile No.
-                                                                <span class="required"></span></strong></td>
-                                                        <td>
-                                                            <%= user.mobile %>
-                                                        </td>
-                                                    </tr>
+                                                                    <button type="submit" class="btn btn-success">Save</button>
+                                                                </form>
+                                                            
+                                                                <!-- <input type="hidden" name="image" value="<%=user.image %>"> -->
+                                                            </figcaption>
+                                                        </figure>
+                                                    </aside>
+                                                    
+
+                                                    <table class="mx-5">
+                                                        <tr>
+                                                            <td><strong> Name <span class="required"></span></strong>
+                                                            </td>
+                                                            <td>
+                                                                <%= user.name %>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><strong>Email
+                                                                    Address <span class="required"></span></strong></td>
+                                                            <td>
+                                                                <%= user.email %>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Mobile No.
+                                                                    <span class="required"></span></strong></td>
+                                                            <td>
+                                                                <%= user.mobile %>
+                                                            </td>
+                                                        </tr>
 
 
-                                                </table>
-                                              
-                                                <div class="col-lg-4">
+                                                    </table>
+                                                
+                                                    <div class="col-lg-4">
 
-                                                    <a href="/editUser"><button type="button"
-                                                            class="btn btn-secondary">EDIT</button></a>
+                                                        <a href="/editUser"><button type="button"
+                                                                class="btn btn-secondary">EDIT</button></a>
 
 
-                                                            <a href="/changePassword"><button type="button"
-                                                                class="btn btn-secondary mt-3">Change Password</button></a>
+                                                                <a href="/changePassword"><button type="button"
+                                                                    class="btn btn-secondary mt-3">Change Password</button></a>
+
+                                                                
+                                                                   
+                                                                    <style>
+        /* Add your custom styles for the wallet icon here */
+        .wallet-icon {
+            font-size: 1.2rem; /* Adjust the font size */
+            color: #33414a; /* Adjust the color */
+            margin-right: 10px; /* Add margin for spacing */
+            margin-top: 100px; /* Add margin-top to the div */
+        }
+    </style>
+
+    <div class="wallet-icon ">
+                <i class="fas fa-wallet">  ₹<%= user.walletBalance %>    </i>  
+            </div>
+
+                                                                    
+                                                    </div>
+                                                    
+                                                    
+
+                                                   
+
 
                                                 </div>
                                                 
-                                                
-
-
-
-
                                             </div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
+
+                           
+
                         </div>
                     </div>
                 </div>
