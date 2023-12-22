@@ -64,45 +64,72 @@
 </head>
 
 <body>
-  <form action="/updateAddress" method="post">
+  <form action="/updateAddress" method="post" onsubmit="return validationChecking()">
     <div class="row">
-      <div class="form-group">
-        <label for="houseName">House Name:</label>
-        <input type="hidden" name="address_id" value="<%=Address._id %>">
-        <input type="text" id="houseName" name="houseName" value="<%=Address.houseName %>" placeholder="Enter Name" />
-        <div id="errorhouseName" class="ms-2 text-danger"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" value="<%=Address.city %>" placeholder="Enter City" />
-        <div id="errorcity" class="ms-2 text-danger"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="street">Street:</label>
-        <input type="text" id="street" name="street" value="<%=Address.street %>" placeholder="Enter Street" />
-        <div id="errorstreet" class="ms-2 text-danger"></div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label for="state">State:</label>
-          <input type="text" id="state" name="state" value="<%=Address.state %>" placeholder="Enter State" />
-          <div id="errorstate" class="ms-2 text-danger"></div>
+        <div class="form-group">
+            <label for="houseName">House Name:</label>
+            <input type="hidden" name="address_id" value="<%=Address._id %>">
+            <input type="text" id="house_name" name="houseName" value="<%=Address.houseName %>" placeholder="Enter Name" />
+            <div class="error-message" style="color: red;" id="house_name-error"></div>
         </div>
 
-        <div class="form-group col-md-6">
-          <label for="pincode">Pincode:</label>
-          <input type="text" id="pincode" name="pincode" value="<%=Address.pincode %>" placeholder="Enter Pincode" />
-          <div id="errorpincode" class="ms-2 text-danger"></div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" value="<%=Address.city %>" placeholder="Enter City" />
+            <div class="error-message" style="color: red;" id="city-error"></div>
         </div>
-      </div>
+
+        <div class="form-group">
+            <label for="street">Street:</label>
+            <input type="text" id="street" name="street" value="<%=Address.street %>" placeholder="Enter Street" />
+            <div class="error-message" style="color: red;" id="street-error"></div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" value="<%=Address.state %>" placeholder="Enter State" />
+                <div class="error-message" style="color: red;" id="state-error"></div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" value="<%=Address.pincode %>" placeholder="Enter Pincode" />
+                <div class="error-message" style="color: red;" id="pincode-error"></div>
+            </div>
+        </div>
     </div>
 
     <br>
     <button class="btn btn-primary" type="submit">Save changes</button>
-  </form>
+</form>
+
 </body>
 
 </html>
+
+
+
+<script>
+  function validationChecking() {
+      const house_name = document.getElementById("house_name").value;
+      const street = document.getElementById("street").value;
+      const city = document.getElementById("city").value;
+      const state = document.getElementById("state").value;
+      const pincode = document.getElementById("pincode").value;
+
+      const house_name_error = document.getElementById("house_name-error");
+      const street_error = document.getElementById("street-error");
+      const city_error = document.getElementById("city-error");
+      const state_error = document.getElementById("state-error");
+      const pincode_error = document.getElementById("pincode-error");
+
+      house_name_error.innerHTML = house_name.trim() === "" ? "Please enter house name" : "";
+      street_error.innerHTML = street.trim() === "" ? "Please enter street" : "";
+      city_error.innerHTML = city.trim() === "" ? "Please enter city" : "";
+      state_error.innerHTML = state.trim() === "" ? "Please enter state" : "";
+      pincode_error.innerHTML = pincode.trim() === "" ? "Please enter pincode" : "";
+
+      return !(house_name.trim() === "" || street.trim() === "" || city.trim() === "" || state.trim() === "" || pincode.trim() === "");
+  }
+</script>

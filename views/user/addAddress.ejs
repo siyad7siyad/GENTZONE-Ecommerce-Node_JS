@@ -2,27 +2,53 @@
 <div class="container w-50 my-5">
   <h2>Add Address</h2>
 
-  <form id="addAddressForm" method="post" action="/addAddress" style="width: 500px " >
+  <form id="addAddressForm" method="post" action="/addAddress" style="width: 500px" onsubmit="return validationChecking()">
     <label for="houseName">House Name:</label>
-    <input type="text" id="houseName" name="houseName" required>
+    <input type="text" id="house_name" name="houseName">
+    <div class="error-message" style="color: red;" id="house_name-error"></div>
 
     <label for="street">Street:</label>
-    <input type="text" id="street" name="street" required>
+    <input type="text" id="street" name="street">
+    <div class="error-message" style="color: red;" id="street-error"></div>
 
     <label for="city">City:</label>
-    <input type="text" id="city" name="city" required>
+    <input type="text" id="city" name="city">
+    <div class="error-message" style="color: red;" id="city-error"></div>
 
     <label for="state">State:</label>
-    <input type="text" id="state" name="state" required>
+    <input type="text" id="state" name="state">
+    <div class="error-message" style="color: red;" id="state-error"></div>
 
     <label for="pincode">Pincode:</label>
-    <input type="text" id="pincode" name="pincode" required>
+    <input type="text" id="pincode" name="pincode">
+    <div class="error-message" style="color: red;" id="pincode-error"></div>
 
     <button type="submit">Add Address</button>
   </form>
 </div>
 
- 
+<script>
+  function validationChecking() {
+    const house_name = document.getElementById("house_name").value;
+    const street = document.getElementById("street").value;
+    const city = document.getElementById("city").value;
+    const state = document.getElementById("state").value;
+    const pincode = document.getElementById("pincode").value;
+
+    const house_name_error = document.getElementById("house_name-error");
+    const street_error = document.getElementById("street-error");
+    const city_error = document.getElementById("city-error");
+    const state_error = document.getElementById("state-error");
+    const pincode_error = document.getElementById("pincode-error");
+
+    house_name_error.innerHTML = house_name.trim() === "" ? "Please enter house name" : "";
+    street_error.innerHTML = street.trim() === "" ? "Please enter street" : "";
+    city_error.innerHTML = city.trim() === "" ? "Please enter city" : "";
+    state_error.innerHTML = state.trim() === "" ? "Please enter state" : "";
+    pincode_error.innerHTML = pincode.trim() === "" ? "Please enter pincode" : "";
+
+    return !(house_name.trim() === "" || street.trim() === "" || city.trim() === "" || state.trim() === "" || pincode.trim() === "");
+  }
+</script>
 
 <%- include('../layouts/userFooter') %>
-

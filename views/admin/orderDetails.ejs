@@ -1,12 +1,12 @@
 <%- include('../layouts/adminHeader.ejs') %>
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <section class="content-main">
     <div class="content-header">
         <div>
             <h5 class="content-title card-title">Order detail</h5>
-            <p>Details for Order ID: 3453012</p>
+            <p>Details for Order ID: <%= order.randomId %></p>
         </div>
     </div>
     <div class="card">
@@ -16,19 +16,16 @@
                     <span>
                         <i class="material-icons md-calendar_today"></i> <b>Wed, Aug 13, 2020, 4:34PM</b>
                     </span> <br>
-                    <small class="text-muted">Order ID: 3453012</small>
+                    <small class="text-muted">Order ID: <%= order.randomId %></small>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
                     <li class="dropdown nav-item me-4">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">select status </a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Select Status</a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Confirmed">Confirmed</a>
-                            <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Shipped">Shipped</a>
-                            <a class="dropdown-item" href="/admin/orderStatusChange?id=<%= order._id%>&status=Delivered">Delivered</a>
-                            <a class="dropdown-item"href="/admin/orderStatusChange?id=<%= order._id%>&status=Cancelled">Cancelled</a>
-                     
-                           
-                         
+                            <a class="dropdown-item change-status"  href="#" data-id="<%= order._id%>" data-status="Confirmed">Confirmed</a>
+                            <a class="dropdown-item change-status" href="#" data-id="<%= order._id%>" data-status="Shipped">Shipped</a>
+                            <a class="dropdown-item change-status" href="#" data-id="<%= order._id%>" data-status="Delivered">Delivered</a>
+                            <a class="dropdown-item change-status" href="#" data-id="<%= order._id%>" data-status="Cancelled">Cancelled</a>
                         </div>
                     </li>
                     
@@ -127,7 +124,7 @@
                                         <article class="float-end">
                                             <dl class="dlist">
                                                 <dt>Subtotal:</dt>
-                                                <dd>₹<%=subtotal %></dd>
+                                                <dd>₹<%=order.totalAmount%></dd>
                                             </dl>
                                             <dl class="dlist">
                                                 <dt>Shipping cost:</dt>
@@ -135,7 +132,7 @@
                                             </dl>
                                             <dl class="dlist">
                                                 <dt>Grand total:</dt>
-                                                <dd> <b class="h5">₹<%= subtotal %></b> </dd>
+                                                <dd> <b class="h5">₹<%=order.totalAmount%></b> </dd>
                                             </dl>
                                             <dl class="dlist">
                                                 <dt class="text-muted">Status:</dt>
@@ -156,5 +153,38 @@
         </div>
     </div> 
 </section> 
+<script>
+    
+    $(document).ready(function () {
+    $(".change-status").on("click", function (e) {
+        e.preventDefault();
+        var orderId = $(this).data("id");
+        var newStatus = $(this).data("status");
+
+        // AJAX request to update status
+        $.ajax({
+            type: "GET",
+            url: "/admin/orderStatusChange?id=" + orderId + "&status=" + newStatus,
+            success: function (data) {
+                console.log("Status changed successfully");
+                console.log("Data received:", data);
+                window.location.reload();
+
+                // Assuming data returned from the server contains the updated order status
+                var updatedStatus = data.status;
+
+                // Update the UI with the new status
+                $("#status-display-" + orderId).text(updatedStatus);
+            },
+            error: function (error) {
+                console.error("Error changing status: " + error);
+            }
+        });
+    });
+});
+
+
+    </script>
+
 
     <%- include('../layouts/adminFooter.ejs') %>

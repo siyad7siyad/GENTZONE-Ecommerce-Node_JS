@@ -49,8 +49,10 @@ const addToWishList = async(req,res)=>{
             console.log("exist wishlist");
             const existingWishlistitem = userWishlist.items.find((item)=>item.product.toString()===productId)
 
+            console.log(existingWishlistitem,"kkkkkkkkkkkk");
+
             if(existingWishlistitem){
-                return res.status(400).json({success:true,message:"the product is alredy wishlist"})
+                return res.status(400).json({success:false,error:"the product is alredy wishlist"})
             }else{
                 userWishlist.items.push({product:productId})
                 await userWishlist.save()

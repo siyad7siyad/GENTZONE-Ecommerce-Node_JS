@@ -104,38 +104,7 @@
                                 </div>
 
                             </div>
-                            <div class="row gx-3">
-                                <div class="col-md-12 card mb-4">
-                                    <div class="card-body">
-
-                                        <div class="size-container">
-                                            <% product.sizes.forEach((size, index) => { %>
-                                                <div class="row my-1">
-                                                    <div class="col-5">
-                                                        <label for="size[<%= index %>][size]">Size :</label>
-                                                        <input type="text" name="sizes[<%= index %>][size]" value="<%= size.size %>" class="form-control" id="size<%= index %>-size">
-                                                    </div>
-                                                    <div class="col-5">
-                                                        <label for="size[<%= index %>][stock]">Stock:</label>
-                                                        <input type="text" name="sizes[<%= index %>][stock]" value="<%= size.stock %>" class="form-control" id="size<%= index %>-stock">
-                                                    </div>
-                                                    <div class="col-2 mt-4">
-                                                        <button type="button" class="btn btn-danger" onclick="removeSize(this)">Remove</button>
-                                                    </div>
-                                                </div>
-                                            <% }); %>
-
-
-                                            
-                                            <!-- Add Product Images Here -->
-                                        </div>
-                                        <button type="button" class="btn btn-primary mt-3" onclick="addSize()">Add
-                                            size</button>
-
-
-                                    </div>
-                                </div>
-                            </div>
+                           
 
 
 
@@ -251,30 +220,8 @@
 
 
     <script>
-        let sizeCount = 0;
 
-        function addSize() {
-    sizeCount++;
-    const container = document.querySelector('.size-container');
-    const sizeDiv = document.createElement('div');
-    sizeDiv.classList.add('row', 'my-1');
-
-    sizeDiv.innerHTML = `
-        <div class="col-5">
-            <label for="size[${sizeCount}]">Size :</label>
-            <input type="text" name="sizes[${sizeCount}][size]" placeholder="Type here" class="form-control" id="size${sizeCount}">
-        </div>
-        <div class="col-5">
-            <label for="stock${sizeCount}">Stock:</label>
-            <input type="text" name="sizes[${sizeCount}][stock]" placeholder="Type here" class="form-control" id="stock${sizeCount}">
-        </div>
-        <div class="col-2 mt-4">
-                <button type="button" class="btn btn-danger " onclick="removeSize(this)">Remove</button>
-            </div>
-    `;
-
-    container.appendChild(sizeDiv);
-}
+       
 
 
         function displayImage(imageNumber, input) {

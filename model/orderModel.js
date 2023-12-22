@@ -39,7 +39,13 @@ const orderSchema = new mongoose.Schema({
     type:String,
     default:'Pending'
   },
- 
+
+  randomId:{
+    type:String,
+    default:randomOrderId,
+   
+  }
+ ,
   items: [
     {
       product: {
@@ -51,5 +57,19 @@ const orderSchema = new mongoose.Schema({
     },
   ],
 });
+
+function randomOrderId() {
+
+  const characters = '1234567890';
+  const codeLength = 4;
+  let referralCode = '';
+  for (let i = 0; i < codeLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      referralCode += characters.charAt(randomIndex);
+  }
+  return referralCode;
+  }
+
+
 
 module.exports = mongoose.model('Order', orderSchema);

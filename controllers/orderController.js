@@ -6,6 +6,7 @@ const User = require("../model/userModel")
 const Coupon = require("../model/couponModel")
 const swal = require('sweetalert2');
 
+
 const {calculateSubtotal,calculateProductTotal} = require("../config/cartFunctions")
 const razorPay = require("razorpay")
 
@@ -22,7 +23,7 @@ const loadCheckOut = async(req,res)=>{
 
         const userId = req.session.user_id
 
-        
+        const coupon  = await Coupon.find()
         const userData = await User.findById(userId)
 
         const cart = await Cart.findOne({user:userId}).populate({
@@ -44,7 +45,7 @@ const loadCheckOut = async(req,res)=>{
 
         const addressData = await Address.find({user:userId})
 
-        res.render("user/checkOut",{userData,addressData,subtotalWithShipping,productTotal,cart:cartItems})
+        res.render("user/checkOut",{userData,addressData,subtotalWithShipping,productTotal,cart:cartItems,coupon})
 
         
         
@@ -77,9 +78,15 @@ const razorPayLoad = async(req,res)=>{
         const cartItems = cart.items || []
       
         
-        let totalAmount = cartItems.reduce((acc, item) => {
-          return acc + item.product.discount_Price * item.quantity;
-      }, 0);
+        const totalAmount = cartItems.reduce(
+          (acc, item) =>
+              acc +
+              ((item.product.salePrice !== 0 ? item.product.salePrice : item.product.discount_Price) *
+                  item.quantity ||
+                  0),
+          0
+      );
+
 
         const options = {
             amount:  Math.round(totalAmount * 100), // Razorpay accepts amount in paisa
@@ -144,10 +151,15 @@ const razorPayLoad = async(req,res)=>{
     
         const cartItems = cart.items || [];
 
-    const totalAmount = cartItems.reduce(
-      (acc, item) => acc + (item.product.discount_Price * item.quantity || 0),
-      0
-    );
+        const totalAmount = cartItems.reduce(
+          (acc, item) =>
+              acc +
+              ((item.product.salePrice !== 0 ? item.product.salePrice : item.product.discount_Price) *
+                  item.quantity ||
+                  0),
+          0
+      );
+
     if (paymentMethod === "onlinePayment") {
       // Create a Razorpay order
       
@@ -156,7 +168,7 @@ const razorPayLoad = async(req,res)=>{
         user: userId,
         address: address,
         orderDate: new Date(),
-        status: "confirmed",
+        status: "Confirmed",
         paymentMethod: paymentMethod,
         paymentStatus: "success", // Set paymentStatus to pending initially
         deliveryDate: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000),
@@ -203,7 +215,7 @@ const razorPayLoad = async(req,res)=>{
         orderDate: new Date(),
         status: "Confirmed",
         paymentMethod: paymentMethod,
-        paymentStatus: "Pending",
+        paymentStatus: "success",
         deliveryDate: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000),
         totalAmount: totalAmount,
         items: cartItems.map((cartItem) => ({
@@ -225,7 +237,15 @@ const razorPayLoad = async(req,res)=>{
 
   }
 
-  
+  cart.items.forEach(cartItem => {
+    const product = cartItem.product;
+
+    // Set sale_price to zero
+    product.salePrice = 0;
+
+    // Save the product
+    product.save();
+    });
 
       cart.items = []; 
       cart.totalAmount = 0; 
@@ -387,49 +407,61 @@ const returnOrder = async(req,res)=>{
 }
 
 // apply coupon 
-
 const applyCoupon = async (req, res) => {
   try {
-    const couponCode = req.body.couponCode;
-    const existCoupon = await Coupon.findOne({ couponCode: couponCode });
+      const couponCode = req.body.couponCode;
+      const existCoupon = await Coupon.findOne({ couponCode });
 
-    if (existCoupon && existCoupon.status === "Active") {
+      if (!existCoupon || existCoupon.status !== "Active") {
+        
+          return res.status(400).json({ error: "Invalid or inactive coupon code" });
+      }
+console.log(!existCoupon);
       const userId = req.session.user_id;
 
-      const userData = await User.findById(userId);
+      // Check if the user has already applied the coupon
+      if (existCoupon.appliedUsers.includes(userId)) {
+          return res.status(400).json({ error: "Coupon is already applied by the user" });
+      }
 
       const cart = await Cart.findOne({ user: userId }).populate({
-        path: "items.product",
-        model: "Product"
-      });
+          path: "items.product",
+          model: "Product",
+          
+      }).exec();
 
-      // Assuming you want to apply the discount to each product's discount_price
-      cart.items.forEach(async (cartItem) => {
-        const product = cartItem.product;
+      if (!cart) {
+          return res.status(400).json({ error: "Cart not found" });
+      }
 
-        // Check if the coupon has already been applied to this product
-        if (!product.couponApplied) {
-          const discountAmount = (existCoupon.discountPercentage / 100) * product.discount_Price;
-          product.discount_Price = product.discount_Price - discountAmount;
+      // Update products with the coupon discount
+      // const discountAmount = (existCoupon.discountPercentage / 100) *product.discount_price ;
 
-          // Mark the product as having the coupon applied
-          product.couponApplied = true;
-
+      for (const cartItem of cart.items) {
+          const product = await Product.findById(cartItem.product._id);
+          const discountAmount = (existCoupon.discountPercentage / 100) *product.discount_Price 
+          // Ensure that 'product' is a mongoose document
+          product.salePrice = product.discount_Price - discountAmount 
           await product.save();
-        }
-      });
+      }
+      
 
+      // Save the coupon ID to the Coupon model
+      existCoupon.appliedUsers.push(userId);
+      await existCoupon.save();
+
+      // Save the coupon ID in the cart
+      cart.coupon = existCoupon._id;
       await cart.save();
+      console.log(cart.items);
 
       res.status(200).json({ success: true });
-    } else {
-      res.status(400).json({ error: "Invalid or inactive coupon code" });
-    }
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+      console.error(error.message);
+      res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 module.exports = {
   
     loadCheckOut,

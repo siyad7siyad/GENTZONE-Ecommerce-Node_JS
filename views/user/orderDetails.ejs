@@ -40,7 +40,7 @@
     <div class="content-header">
         <div>
             <h5 class="content-title card-title ">Order detail</h5>
-            <p>Details for Order ID: 3453012</p>
+            <p>Details for Order ID:<%= order.randomId %></p>
         </div>
     </div>
     <div class="card">
@@ -50,7 +50,7 @@
                     <span>
                         <i class="material-icons md-calendar_today"></i> <b>Wed, Aug 13, 2020, 4:34PM</b>
                     </span> <br>
-                    <small class="text-muted">Order ID: 3453012</small>
+                    <small class="text-muted">Order ID:<%= order.randomId %></small>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
                     <% if (order.status=="Confirmed" ) {
@@ -73,7 +73,7 @@
                     </li>
                     
                
-                    <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
+                    <button class="btn btn-secondary print ms-2"  id="pdfButton"><i class="icon material-icons md-print"></i> Download</button>
                 </div>
             </div>
         </header>
@@ -321,7 +321,23 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById("pdfButton").addEventListener("click", function () {
+        console.log("aaaaaaaaaaaaaaa");
+        const salesContainer = document.querySelector(".content-main");
+        const pdfOptions = {
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 1.0 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().from(salesContainer).set(pdfOptions).save();
+});
+</script>
 
 

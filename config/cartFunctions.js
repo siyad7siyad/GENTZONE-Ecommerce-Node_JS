@@ -1,32 +1,34 @@
 
-const calculateSubtotal = (cart)=>{
+const calculateSubtotal = (cart) => {
     let subtotal = 0;
 
-    for(const cartItems of cart){
-        
+    for (const cartItems of cart) {
 
-        subtotal += cartItems.product.discount_Price*cartItems.quantity 
+        const priceToUse = cartItems.product.salePrice !== 0 ? cartItems.product.salePrice : cartItems.product.discount_Price
+
+        subtotal += priceToUse * cartItems.quantity
 
     }
-console.log(subtotal,"lllll");
+
     return subtotal
 }
 
-const calculateProductTotal = (cart)=>{
+const calculateProductTotal = (cart) => {
     let productTotal = []
 
-    for(const cartItems of cart){
-
-      const total = cartItems.product.discount_Price*cartItems.quantity;
+    for (const cartItems of cart) {
+        const priceToUse = cartItems.product.salePrice !== 0 ? cartItems.product.salePrice : cartItems.product.discount_Price
+       
+        const total = priceToUse* cartItems.quantity;
 
         productTotal.push(total)
 
-    }
+    } 
 
     return productTotal
 }
 
-module.exports ={
+module.exports = {
     calculateSubtotal,
     calculateProductTotal
 }

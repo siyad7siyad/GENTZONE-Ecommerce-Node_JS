@@ -48,7 +48,6 @@ const addProduct = async(req,res)=>{
       if(existingProduct){
         res.render('addCategory',{error:"Product with same name is already exist"})}else{
           const category=Category.find({category:categoryData})
-          const sizedata = req.body.sizes
           const addProducts =new Product({
               name:name,
               category:categoryData,
@@ -58,7 +57,6 @@ const addProduct = async(req,res)=>{
               gender:gender,
               brand:brand,
               description:description,
-              sizes:sizedata,
               image
           })
           await addProducts.save()
@@ -107,7 +105,6 @@ const updateProduct = async(req,res)=>{
       description,
     } = req.body;
 
-    const sizedata = req.body.sizes;
     if (req.body.deletecheckbox) {
    
       deleteData.push(req.body.deletecheckbox); 
@@ -161,7 +158,6 @@ const updateProduct = async(req,res)=>{
           gender,
           brand,
           description,
-          sizes: sizedata,
           image:images,
         },
       }

@@ -7,8 +7,10 @@ const productController = require("../controllers/admin/productController")
 const orderController = require("../controllers/admin/orderController")
 const brandController = require("../controllers/admin/brandController")
 const couponController = require("../controllers/admin/couponController")
-
+const bannerController = require("../controllers/admin/bannerController")
+const offerController = require("../controllers/admin/offerController")
 const adminAuth = require('../middlewares/adminAuth')
+
 adminRoute.set("views","./views/admin")
 
 // login
@@ -53,6 +55,8 @@ adminRoute.get("/deleteProduct/:id",adminAuth.isLogin,productController.deletePr
 adminRoute.get("/orders",adminAuth.isLogin,orderController.loadOrders)
 adminRoute.get("/orderList",adminAuth.isLogin,orderController.listOrder)
 adminRoute.get("/orderStatusChange",adminAuth.isLogin,orderController.orderStatusChange)
+adminRoute.get("/salesReport",adminAuth.isLogin,orderController.loadSalesReport)
+
 
 
 // brand
@@ -73,6 +77,21 @@ adminRoute.post("/addCoupon",couponController.addCoupon)
 adminRoute.get("/EditCoupon",adminAuth.isLogin,couponController.loadEditCoupon)
 adminRoute.post("/updateCount",couponController.updateCoupon)
 adminRoute.get("/deleteCoupon/:id",adminAuth.isLogin,couponController.deleteCoupon)
+
+// banner
+adminRoute.get("/loadBanner",adminAuth.isLogin,bannerController.loadBanner)
+adminRoute.get("/loadAddBanner",adminAuth.isLogin,bannerController.loadAddBanner)
+adminRoute.post("/addBanner",multer.uploadCategory.single('image'),bannerController.addBanner)
+adminRoute.get("/loadEditForm",adminAuth.isLogin,bannerController.loadEditForm)
+adminRoute.post("/updateBanner",multer.uploadCategory.single('image'),bannerController.updateBanner)
+adminRoute.get("/deleteBanner/:id",adminAuth.isLogin,bannerController.deleteBanner)
+
+// offer 
+// adminRoute.get("/loadOfferAdd",adminAuth.isLogin,offerController.loadOfferAdd)
+// adminRoute.get("/loadOfferList",adminAuth.isLogin,offerController.loadOfferList)
+// adminRoute.post("/addOffer",offerController.addOffer)
+// adminRoute.get("/loadEditOffer",adminAuth.isLogin,offerController.loadOfferEdit)
+
 
 
 

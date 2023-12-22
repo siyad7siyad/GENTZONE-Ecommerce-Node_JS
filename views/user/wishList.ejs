@@ -54,16 +54,21 @@
                                           
                                                
                                                 <form action="/cart" method="post" class="product-form">
-                                                    <input type="hidden" value="<%= wishlistData.product._id %>"
-                                                        name="productId">
+                                                    <input type="hidden" name="productData_id" value="<%= wishlistData.product._id %>"
+                                                        >
+                                                        <input type="hidden" name="qty" class="w-25 py-4" value="1" min="1"
+                                                    max="10">
                                                     <div class="detail-extralink">
                                                         <div class="product-extra-link2 w-50 my-1">
                                                             <td class="text-right" data-title="Cart">
-                                                                <a href="/cart"></a>
-                                            <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                                                <button type="submit" class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                                        
                                         </td>
                                                         </div>
+                                                        
                                                     </div>
+                                                    
+
                                                 </form>
                                            
                                         </tr>

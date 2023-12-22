@@ -11,7 +11,7 @@ const couponController = require("../controllers/admin/couponController")
 // registration
 
 userRoute.get('/register',userAuth.isLogout,userController.loadRegister)
-userRoute.post('/register',userController.insertUser)
+userRoute.post('/register',userAuth.isLogout,userController.insertUser)
 userRoute.get('/otp',userAuth.isLogout,userController.loadOtp)
 userRoute.post('/otp',userController.verifyOtp)
 userRoute.get('/resendOtp',userAuth.isLogout,userController.resendOTP)
@@ -25,8 +25,7 @@ userRoute.get('/', userController.loadHome);
 
 userRoute.get("/items",userAuth.isLogin,userController.loadItems)
 userRoute.get("/single-items",userAuth.isLogin,userController.singleItems)
-userRoute.get("/sortAsc",userAuth.isLogin,userController.sortedAscending)
-userRoute.get("/sortDes",userAuth.isLogin,userController.sortDescending)
+
 
 // user profile
 userRoute.get("/user-profile",userAuth.isLogin,userController.userProfile)
@@ -39,7 +38,8 @@ userRoute.get("/editUser",userController.loadEditUser)
 userRoute.post("/updateUser",userController.updateUser)
 userRoute.get("/changePassword",userController.changePassword)
 userRoute.post("/editPassword",userController.editPassword)
-userRoute.post("/updateProfile",multer.uploadProfile.single('image'),userController.updateProfile)
+userRoute.post("/updateProfile",userController.updateProfile)
+userRoute.post("/updateProfilePic",multer.uploadProfile.single('croppedImage'),userController.updateUserProfilepic)
 
 
 // cart

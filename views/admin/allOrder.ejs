@@ -8,11 +8,7 @@
         <p>Lorem ipsum dolor sit amet.</p>
 
       </div>
-      <div>
-        <a href="#" class="btn btn-light rounded font-md">Export</a>
-        <a href="#" class="btn btn-light rounded  font-md">Import</a>
-        <a href="/admin/addproduct" class="btn btn-primary btn-sm rounded">Create new</a>
-      </div>
+    
     </div>
     <div class="card mb-4">
       <header class="card-header">
@@ -63,7 +59,7 @@
               %>
                                 
             <tr>
-                <td><%= order_data._id %></td>
+                <td><%= order_data.randomId %></td>
                 <td>     <%= new Date(order_data.orderDate).toLocaleDateString() %></td>
                 <td>     <%= new Date(order_data.deliveryDate).toLocaleDateString() %></td>
                

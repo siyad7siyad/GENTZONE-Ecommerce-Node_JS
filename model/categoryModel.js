@@ -20,7 +20,14 @@ const Category = mongoose.Schema({
   categoryAddDate:{
     type:Date,
     default:Date.now
-  }
+  },
+  discountStatus:{
+    type:Boolean,
+    default:false
+  },
+  discount:String,
+  discountStart:Date,
+  discountEnd:Date
 })
 
 module.exports = mongoose.model("Category",Category)

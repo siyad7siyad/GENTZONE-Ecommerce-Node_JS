@@ -23,12 +23,11 @@
                                                 aria-selected="false"><i
                                                     class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
                                         </li>
-                                       
+
                                         <li class="nav-item">
-                                            <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
-                                                href="#track-orders" role="tab" aria-controls="track-orders"
-                                                aria-selected="false"><i
-                                                    class="fi-rs-shopping-cart-check mr-10"></i>Track
+                                            <a class="nav-link" id="orders-tab-link" data-bs-toggle="tab"
+                                                href="/orderSuccess" role="tab" aria-controls="/orderSuccess"
+                                                aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>
                                                 Your Order</a>
                                         </li>
                                         <li class="nav-item">
@@ -72,44 +71,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
-                                    <div class="tab-pane fade" id="track-orders" role="tabpanel"
-                                        aria-labelledby="track-orders-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Orders tracking</h5>
-                                            </div>
-                                            <div class="card-body contact-from-area">
-                                                <p>To track your order please enter
-                                                    your OrderID in the box below
-                                                    and press "Track" button. This
-                                                    was given to you on your receipt
-                                                    and in the confirmation email
-                                                    you should have received.</p>
-                                                <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <form class="contact-form-style mt-30 mb-50" action="#"
-                                                            method="post">
-                                                            <div class="input-style mb-20">
-                                                                <label>Order ID</label>
-                                                                <input name="order-id"
-                                                                    placeholder="Found in your order confirmation email"
-                                                                    type="text" class="square">
-                                                            </div>
-                                                            <div class="input-style mb-20">
-                                                                <label>Billing email</label>
-                                                                <input name="billing-email"
-                                                                    placeholder="Email you used during checkout"
-                                                                    type="email" class="square">
-                                                            </div>
-                                                            <button class="submit submit-auto-width"
-                                                                type="submit">Track</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+
                                     <div class="tab-pane fade" id="address" role="tabpanel"
                                         aria-labelledby="address-tab">
                                         <div class="row d-flex">
@@ -136,9 +99,11 @@
 
                                                             <input type="hidden" name="address_id" value="<%= x._id %>">
 
-                                                            <a class="mx-5" href="#" onclick="confirmDelete('<%= x._id %>')">
-    <button type="button" class="btn btn-danger">DELETE</button>
-</a>
+                                                            <a class="mx-5" href="#"
+                                                                onclick="confirmDelete('<%= x._id %>')">
+                                                                <button type="button"
+                                                                    class="btn btn-danger">DELETE</button>
+                                                            </a>
 
                                                         </div>
                                                     </div>
@@ -154,188 +119,316 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="account-detail" role="tabpanel"
-                                            aria-labelledby="account-detail-tab">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h5>Account Details</h5>
-                                                </div>
-
-
-
-                                                <div class="card-body" style="display: flex;">
-                                                    
-                                                    <aside class="col-lg-2">
-                                                        <figure class="text-lg-center">
-                                                            <% if (user.image) { %>
-                                                                <img class="img-lg mb-3 img-avatar" id="previewImage" src="/userassets/images/<%= user.image %>" alt="User Photo">
-                                                            <% } else { %>
-                                                                <img class="img-lg mb-3 img-avatar" id="previewImage" src="/userassets/images/Artboard 1.png" alt="User Photo">
-                                                            <% } %>
-                                                            <figcaption>
-                                                
-
-                                                                    <form action="/updateProfile?id=<%= user._id%>" method="post" enctype="multipart/form-data">
-    
-                                                                    <input type="file" name="image" id="fileUpload" style="display: none;">
-                                                                    <label type="submit" for="fileUpload" class="btn btn-light rounded font-md">
-                                                                        <i class="icons material-icons md-backup font-md"></i>
-                                                                        Upload
-                                                                    </label>
-
-                                                                    <button type="submit" class="btn btn-success">Save</button>
-                                                                </form>
-                                                            
-                                                                <!-- <input type="hidden" name="image" value="<%=user.image %>"> -->
-                                                            </figcaption>
-                                                        </figure>
-                                                    </aside>
-                                                    
-
-                                                    <table class="mx-5">
-                                                        <tr>
-                                                            <td><strong> Name <span class="required"></span></strong>
-                                                            </td>
-                                                            <td>
-                                                                <%= user.name %>
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td><strong>Email
-                                                                    Address <span class="required"></span></strong></td>
-                                                            <td>
-                                                                <%= user.email %>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Mobile No.
-                                                                    <span class="required"></span></strong></td>
-                                                            <td>
-                                                                <%= user.mobile %>
-                                                            </td>
-                                                        </tr>
-
-
-                                                    </table>
-                                                
-                                                    <div class="col-lg-4">
-
-                                                        <a href="/editUser"><button type="button"
-                                                                class="btn btn-secondary">EDIT</button></a>
-
-
-                                                                <a href="/changePassword"><button type="button"
-                                                                    class="btn btn-secondary mt-3">Change Password</button></a>
-
-                                                                
-                                                                   
-                                                                    <style>
-        /* Add your custom styles for the wallet icon here */
-        .wallet-icon {
-            font-size: 1.2rem; /* Adjust the font size */
-            color: #33414a; /* Adjust the color */
-            margin-right: 10px; /* Add margin for spacing */
-            margin-top: 100px; /* Add margin-top to the div */
-        }
-    </style>
-
-    <div class="wallet-icon ">
-                <i class="fas fa-wallet">  ₹<%= user.walletBalance %>    </i>  
-            </div>
-
-                                                                    
-                                                    </div>
-                                                    
-                                                    
-
-                                                   
-
-
-                                                </div>
-                                                
+                                        aria-labelledby="account-detail-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Account Details</h5>
                                             </div>
-                                        
+
+
+
+                                            <div class="card-body" style="display: flex;">
+
+                                                <aside class="col-lg-2">
+                                                    <figure class="text-lg-center">
+                                                        <% if (user.image) { %>
+                                                            <img class="img-lg mb-3 img-avatar" id="previewImage"
+                                                                src=""
+                                                                alt="">
+                                                            <% } else { %>
+                                                                <img class="img-lg mb-3 img-avatar" id="previewImage"
+                                                                    src="/userassets/images/<%= user.image %>"
+                                                                    alt="User Photo">
+                                                                <% } %>
+                                                                    <figcaption>
+
+                                                                        <form enctype="multipart/form-data"
+                                                                            id="imageForm">
+                                                                            <div class="input-upload mb-3">
+                                                                                <% if (user.image) { %>
+                                                                                    <img src="/userassets/images/<%= user.image %>"
+                                                                                        alt="" id="imgView1"
+                                                                                        style="width: 300px;">
+                                                                                    <% } else { %>
+                                                                                        <img src="/uploadimage.svg"
+                                                                                            alt="" id="imgView1"
+                                                                                            style="width: 300px;">
+                                                                                        <% } %>
+                                                                                            <input
+                                                                                                style="display: none;"
+                                                                                                class="form-data"
+                                                                                                type="file" name="image"
+                                                                                                id="input1"
+                                                                                                accept="image/png, image/jpeg, image/jpg">
+                                                                                            <label for="input1"
+                                                                                                class="btn btn-primary rounded font-md"
+                                                                                                style="cursor: pointer; margin-top: 10px;">
+                                                                                                <i
+                                                                                                    class="fa-solid fa-upload"></i>
+                                                                                                Upload
+                                                                                                Image
+                                                                                            </label>
+                                                                            </div>
+                                                                            <div class="image-cropper mb-3"
+                                                                                style="display:none; width: 300px;">
+                                                                                <img src="" id="croppedImg1" alt="">
+                                                                                <button type="button" id="saveButton1"
+                                                                                    class="btn btn-primary">Save</button>
+                                                                            </div>
+                                                                        </form>
+
+                                                                    </figcaption>
+                                                    </figure>
+
+                                                </aside>
+
+
+                                                <table class="mx-5">
+                                                    <tr>
+                                                        <td><strong> Name <span class="required"></span></strong>
+                                                        </td>
+                                                        <td>
+                                                            <%= user.name %>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><strong>Email
+                                                                Address <span class="required"></span></strong></td>
+                                                        <td>
+                                                            <%= user.email %>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Mobile No.
+                                                                <span class="required"></span></strong></td>
+                                                        <td>
+                                                            <%= user.mobile %>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </table>
+
+                                                <div class="col-lg-4">
+
+                                                    <a href="/editUser"><button type="button"
+                                                            class="btn btn-secondary">EDIT</button></a>
+
+
+                                                    <a href="/changePassword">
+                                                        <button type="button"
+                                                            class="btn btn-secondary btn-sm mt-3">Change
+                                                            Password</button>
+                                                    </a>
+
+
+
+
+                                                    <style>
+                                                        /* Add your custom styles for the wallet icon here */
+                                                        .wallet-icon {
+                                                            font-size: 1.2rem;
+                                                            /* Adjust the font size */
+                                                            color: #33414a;
+                                                            /* Adjust the color */
+                                                            margin-right: 10px;
+                                                            /* Add margin for spacing */
+                                                            margin-top: 100px;
+                                                            /* Add margin-top to the div */
+                                                        }
+                                                    </style>
+
+                                                    <div class="wallet-icon ">
+                                                        <i class="fas fa-wallet"> ₹<%= user.walletBalance %> </i>
+                                                    </div>
+
+
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
 
-                           
+
 
                         </div>
                     </div>
                 </div>
         </section>
     </main>
-<script>
+    <script>
 
-document.getElementById("fileUpload").addEventListener('change',function(event){
-    const file = event.target.files[0]
-    if(file){
+        document.getElementById("fileUpload").addEventListener('change', function (event) {
+            const file = event.target.files[0]
+            if (file) {
 
-        const reader = new FileReader()
-        reader.onload = function(e){
-            document.getElementById('previewImage').src = e.target.result
-        }
-        reader.readAsDataURL(file)
+                const reader = new FileReader()
+                reader.onload = function (e) {
+                    document.getElementById('previewImage').src = e.target.result
+                }
+                reader.readAsDataURL(file)
 
-    }
-})
+            }
+        })
 
-</script>
+    </script>
 
-<script>
-    function confirmDelete(addressId) {
-    Swal.fire({
-        title: 'Confirm Deletion',
-        text: 'Are you sure you want to delete this address?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, Delete Address',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            
-            $.ajax({
-                url: '/deleteAddress/' + addressId,
-                type: 'GET',
-                contentType: 'application/json',
-                success: function (data) {
-                    if (data.success) {
-                        // Show success message
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Address Deleted Successfully!',
-                            text: 'Click OK to proceed.',
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                              window.location.reload();
+    <script>
+        function confirmDelete(addressId) {
+            Swal.fire({
+                title: 'Confirm Deletion',
+                text: 'Are you sure you want to delete this address?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete Address',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '/deleteAddress/' + addressId,
+                        type: 'GET',
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.success) {
+                                // Show success message
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Address Deleted Successfully!',
+                                    text: 'Click OK to proceed.',
+                                    confirmButtonText: 'OK',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            } else {
+                                // Show error message
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Error occurred while deleting address.',
+                                });
                             }
-                        });
-                    } else {
-                        // Show error message
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Error occurred while deleting address.',
-                        });
-                    }
-                },
-                error: function (error) {
-                    console.error('Error:', error);
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
 
-                    // Show error message
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Error occurred while deleting address. Check the console for details.',
+                            // Show error message
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error occurred while deleting address. Check the console for details.',
+                            });
+                        }
                     });
                 }
             });
         }
-    });
-}
 
-</script>
+    </script>
+
+
+    <script>
+        // Get the link element by ID
+        const ordersTabLink = document.getElementById('orders-tab-link');
+
+        // Add a click event listener to handle the navigation
+        ordersTabLink.addEventListener('click', function (event) {
+            // Prevent the default behavior of the link
+            event.preventDefault();
+
+            // Manually navigate to the specified URL
+            window.location.href = '/orderSuccess';
+        });
+    </script>
+
+    <!-- Include Cropper.js from CDN -->
+   
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.js"></script> \
+    <script>
+        document.getElementById('input1').addEventListener('change', function (event) {
+            let input = event.target;
+            let reader = new FileReader();
+            console.log("crop");
+
+            reader.onload = function () {
+                let dataURL = reader.result;
+                let image = document.getElementById('imgView1');
+                image.src = dataURL;
+
+                // Initialize Cropper.js on the image
+                let cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    guides: true,
+                    background: false,
+                    autoCropArea: 1,
+                    zoomable: true
+                });
+
+                // Show the image cropper container
+                let cropperContainer = document.querySelector('.image-cropper');
+                cropperContainer.style.display = 'block';
+
+                // Update the cropped image when the "Save" button is clicked
+                let saveButton = document.getElementById('saveButton1');
+                saveButton.addEventListener('click', function () {
+                    // Get the cropped canvas data
+                    console.log("save");
+                    const canvas = cropper.getCroppedCanvas();
+
+                    if (!canvas) {
+                        return;
+                    }
+
+                    // Convert the canvas to a Blob (in this case, to a JPEG file with quality 1.0)
+                    canvas.toBlob(blob => {
+                        const formData = new FormData();
+                        formData.append('croppedImage', blob, 'cropped-image.jpg');
+
+                        // Append any other necessary data to the form (if needed)
+                        // formData.append('otherField', otherValue);
+
+                        // Submit the form data to the backend using Fetch API or XMLHttpRequest
+                        fetch('/updateProfilePic', {
+                            method:'POST',
+                            body: formData
+                        })
+                            .then(response => {
+                                if (response.ok) {
+
+                                    console.log("fetched");
+
+                                    console.log('Cropped image submitted successfully!');
+                                    window.location.reload();
+                                } else {
+                                    console.error('Failed to submit cropped image.');
+                                    // Optionally, handle failed submission
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error submitting cropped image:', error);
+                            });
+                    }, 'image/jpeg'); // Set the desired image format here
+                });
+            };
+            reader.readAsDataURL(input.files[0]);
+        });
+    </script>
+
 
     <%- include('../layouts/userFooter.ejs') %>

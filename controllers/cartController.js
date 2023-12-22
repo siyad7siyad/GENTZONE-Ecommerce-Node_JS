@@ -71,6 +71,7 @@ const loadCartPage = async(req,res)=>{
 // add to cart method
 
 const addToCart = async(req,res)=>{
+    console.log("fghjkljhgfdsa");
     try {
 
         const userId = req.session.user_id

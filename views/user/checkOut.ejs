@@ -6,8 +6,18 @@
     <div class="panel-collapse collapse coupon_form " id="coupon">
         <div class="panel-body">
             <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+            <ul class="list-group">
+                <% for (const coupons of coupon) { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <%= coupons.couponCode %>
+                        <button class="btn btn-primary btn-sm" onclick="copyToClipboard('<%= coupons.couponCode %>')">Copy</button>
+                    </li>
+                <% } %>
+            </ul>
             <form method="post" action="/validateCoupon">
                 <div class="form-group">
+                   
+
                     <input type="text" placeholder="Enter Coupon Code..." id="couponInput" name="couponCode">
                 </div>
                 <div class="form-group">
@@ -267,6 +277,8 @@
                                                             class="font-xl text-brand fw-900">₹<%=subtotalWithShipping
                                                                 %></span></td>
                                                 </tr>
+                                               
+
 
 
 
@@ -639,5 +651,27 @@
             });
     }
 </script>
+
+<script>
+    function copyToClipboard(text) {
+        // Create a text area to hold the coupon code
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+
+        // Append the text area to the document
+        document.body.appendChild(textArea);
+
+        // Select and copy the text
+        textArea.select();
+        document.execCommand('copy');
+
+        // Remove the text area from the document
+        document.body.removeChild(textArea);
+
+        // Optionally, provide some visual feedback (e.g., alert or tooltip)
+        alert('Coupon code copied to clipboard: ' + text);
+    }
+</script>
+
 
     <%- include('../layouts/userFooter.ejs') %>

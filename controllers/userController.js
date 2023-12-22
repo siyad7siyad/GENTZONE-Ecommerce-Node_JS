@@ -7,6 +7,7 @@ const Address = require("../model/addressModel")
 const { AwsPage } = require("twilio/lib/rest/accounts/v1/credential/aws");
 const multer = require("../middlewares/multer")
 const Cart = require("../model/cartModel")
+const Banner = require('../model/bannerModel')
 
 
 const securePassword = async (password) => {
@@ -22,7 +23,9 @@ const securePassword = async (password) => {
 // get register
 const loadRegister = async (req, res) => {
   try {
-    res.render("user/register");
+    
+   const referral = req.query.referralCode
+    res.render("user/register",{referral});
   } catch (error) {
     console.log(error.message);
   }
@@ -44,12 +47,35 @@ const insertUser = async (req, res) => {
       });
     }
 
+    req.session.referralCode = req.body.referralCode || null
+
+    const referralCode = req.session.referralCode
+
+    
+
     const existMail = await User.findOne({ email: email });
     // const existnumber = await User.findOne({ email: email });
 
-    // if (existMail) {
-    //   res.render("user/register", { message: "this user already exists" });
-    // } else {
+
+    if(referralCode){
+      referror = await User.findOne({referralCode})
+
+      if(!referror){
+        res.render("user/register",{message:"invalid referal code"})
+      }
+
+      if(referror.userRefered.includes(req.body.email)){
+        res.render("user/register",{message:"this referal code is already exist"})
+
+      }
+
+    }
+
+
+
+    if (existMail) {
+      res.render("user/register", { message: "this user already exists" });
+    } else {
    
       req.session.userData = req.body;
       req.session.email = email;
@@ -57,7 +83,7 @@ const insertUser = async (req, res) => {
         res.redirect("/otp");
       }
      
-    // }
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -97,9 +123,32 @@ console.log(firstDigit)
         isAdmin: 0,
         is_blocked:1,
       });
-      console.log(user);
+      
       const userDataSave = await user.save();
       if (userDataSave &&userDataSave.isAdmin === 0) {
+
+        if(req.session.referralCode){
+          const userData = await User.findOne({ _id: userDataSave._id});
+          if(userData){
+            userData.walletBalance +=50
+            await userData.save()
+          }
+        
+        }
+
+        const referror = await User.findOne({
+          referralCode :req.session.referralCode
+        })
+        const userData = await User.findOne({ _id: req.session.user_id });
+        referror.userRefered.push(user.email) 
+        referror.walletBalance +=100
+        await referror.save()
+
+      
+
+
+
+
         res.redirect("/");
       } else {
         res.render("user/otp", { message: "Registration Failed" });
@@ -187,7 +236,8 @@ const loadHome = async (req, res) => {
   try {
     const userData =  req.session.user_id;
     const productData= await Product.find(); 
-    res.render("user/home", {  products:productData, userData });
+    const banner = await Banner.find()
+    res.render("user/home", {  products:productData, userData,banner });
   } catch (error) {
     console.log(error.message);
   }
@@ -206,62 +256,102 @@ const userLogout = async (req, res) => {
   }
 };
 
-//Load the product list at userside 
-
-const ITEMS_PER_PAGE = 6; // Adjust the number based on your preference
 
 const loadItems = async (req, res) => {
   try {
-    const userData = req.session.user_id;
-    const page = parseInt(req.query.page) || 1;
+      const userData = req.session.user_id;
 
-    const totalProducts = await Product.countDocuments();
-    const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+      
+      const categoryData = await Category.find();
 
-    const productData = await Product.find()
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
+     
+      const selectedCategory = req.query.categoryName;
 
-    const categoryData = await Category.find();
+     
+      const categoryFilter = selectedCategory ? { category: selectedCategory } : {};
 
-    res.render("user/items", {
-      user: userData,
-      products: productData,
-      category: categoryData,
-      currentPage: page,
-      totalPages: totalPages,
-    });
+      
+      
+      const sort = req.query.sort
+      let sortOption = {};
+      if (sort === 'asc') {
+          sortOption = { discount_Price: 1 }; 
+      } else if (sort === 'dsc') {
+          sortOption = { discount_Price: -1 }; 
+      } else {
+          
+          sortOption = {};
+      }
+      const page = req.query.page ||1
+      const itemsPerPage=6
+      const totalProducts=await Product.countDocuments({...categoryFilter})
+      const totalPages =Math.ceil(totalProducts/itemsPerPage)
+      
+      const options = {
+          page : page,
+          limit :itemsPerPage,
+          sort:sortOption
+      }
+
+
+      
+      const productData = await Product.paginate({...categoryFilter},options);
+      
+
+      res.render('user/items', {
+          user: userData,
+          products: productData.docs,
+          category: categoryData,
+          selectedCategory: selectedCategory, 
+          totalPages:totalPages,
+          currentPage:productData.page
+      });
   } catch (error) {
-    console.log(error.message);
+      console.log(error);
   }
 };
 
 
-const sortedAscending = async(req,res)=>{
-  try {
-    const userData = req.session.user_id
-    const productData = await Product.find().sort({discount_Price:1})
-    const categoryData = await Category.find()
 
-    res.render("user/items",{user: userData,products:productData,category:categoryData})
-    
-  } catch (error) {
-    console.log(error.message);
-  }
-}
+//Load the product list at userside 
 
-const sortDescending = async(req,res)=>{
-  try {
-    const userData = req.session.user_id
-    const productData = await Product.find().sort({discount_Price:-1})
-    const categoryData = await Category.find()
+ // Adjust the number based on your preference
 
-    res.render("user/items",{user: userData,products:productData,category:categoryData})
-    
-  } catch (error) {
-    console.log(error.message);
-  }
-}
+// const loadItems = async (req, res) => {
+//   try {
+//     const userData = req.session.user_id;
+
+
+//     const page = parseInt(req.query.page) || 1;
+
+
+
+
+//     const totalProducts = await Product.countDocuments();
+//     const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+
+//     const productData = await Product.find()
+//       .skip((page - 1) * ITEMS_PER_PAGE)
+//       .limit(ITEMS_PER_PAGE);
+
+//     const categoryData = await Category.find();
+
+//     res.render("user/items", {
+//       user: userData,
+//       products: productData,
+//       category: categoryData,
+//       currentPage: page,
+//       totalPages: totalPages,
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+
+
+
+
 
 // load single product details
 
@@ -549,7 +639,7 @@ const updateProfile = async (req, res) => {
 
     
 
-    if(!req.file){
+    
 
 
 
@@ -562,13 +652,7 @@ const updateProfile = async (req, res) => {
         }
       })
 
-    }else{
-      const userData = await User.findByIdAndUpdate({_id:id},{
-        $set:{
-          image:req.file.filename
-        }
-      })
-    }
+    
 
     res.redirect("/user-profile")
 
@@ -581,6 +665,27 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const updateUserProfilepic = async (req, res) => {
+  try{
+
+    console.log("AAAAAAAAAAAAAAAAA");
+
+    const userData = await User.findById({ _id: req.session.user_id });
+    const productData = await Product.find(); 
+    const addressData = await Address.find();
+    
+    const croppedImage = req.file.filename;
+    
+    await User.findByIdAndUpdate({ _id: userData.id },{
+      $set: {
+        image: croppedImage,
+      },
+    })
+    res.status(200).json({ success: true, message: 'Profile Picture changed' });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -609,7 +714,6 @@ module.exports = {
   changePassword,
   editPassword,
   updateProfile,
-  sortedAscending,
-  sortDescending
+  updateUserProfilepic
  
 };

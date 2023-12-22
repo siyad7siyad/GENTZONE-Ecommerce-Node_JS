@@ -106,20 +106,7 @@
                                 </div>
 
                             </div>
-                            <div class="row gx-3">
-                                <div class="col-md-12 card mb-4">
-                                    <div class="card-body">
-
-                                        <div class="size-container">
-                                            <!-- Add Product Images Here -->
-                                        </div>
-                                        <button type="button" class="btn btn-primary mb-3" onclick="addSize()">Add
-                                            size</button>
-
-
-                                    </div>
-                                </div>
-                            </div>
+                         
 
 
 
@@ -310,29 +297,7 @@
     <script>
         let sizeCount = 0;
 
-        
-        function addSize() {
-    sizeCount++;
-    const container = document.querySelector('.size-container');
-    const sizeDiv = document.createElement('div');
-    sizeDiv.classList.add('row', 'my-1');
-
-    sizeDiv.innerHTML = `
-        <div class="col-6">
-            <label for="size[${sizeCount}]">Size :</label>
-            <input type="text" name="sizes[${sizeCount}][size]" placeholder="Type here" class="form-control" id="size${sizeCount}">
-        </div>
-        <div class="col-6">
-            <label for="stock${sizeCount}">Stock:</label>
-            <input type="text" name="sizes[${sizeCount}][stock]" placeholder="Type here" class="form-control" id="stock${sizeCount}">
-        </div>
-        <div class="col-1">
-                
-            </div>
-    `;
-
-    container.appendChild(sizeDiv);
-}
+      
 
         function displayImage(imageNumber, input) {
             const preview = document.getElementById(`image-preview${imageNumber}`);

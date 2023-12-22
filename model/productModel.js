@@ -54,13 +54,24 @@ const Product =new mongoose.Schema({
     type:Boolean,
     default:true
   },
-  couponApplied:{
+  salePrice:{
+    type: Number,
+   
+  },
+  discountPrice:{
+    type:Number,
+  
+  },
+  discountStatus:{
     type:Boolean,
     default:false
   },
+  discount:Number,
+  discountStart:Date,
+  discountEnd:Date
   
 
 
 })
-
+Product.plugin(mongoosePaginate)
 module.exports = mongoose.model("Product",Product)
