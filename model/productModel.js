@@ -24,11 +24,7 @@ const Product =new mongoose.Schema({
     type:String,
     required:true
   },
-  
-  discount_Price: {
-    type: Number,
-    required: true,
-  },
+
     
   price: {
     type: Number,
@@ -58,7 +54,7 @@ const Product =new mongoose.Schema({
     type: Number,
    
   },
-  discountPrice:{
+  offerPrice:{
     type:Number,
   
   },

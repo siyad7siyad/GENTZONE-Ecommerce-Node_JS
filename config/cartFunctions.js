@@ -4,7 +4,7 @@ const calculateSubtotal = (cart) => {
 
     for (const cartItems of cart) {
 
-        const priceToUse = cartItems.product.salePrice !== 0 ? cartItems.product.salePrice : cartItems.product.discount_Price
+        const priceToUse = cartItems.product.salePrice !== 0 ? cartItems.product.salePrice : cartItems.product.offerPrice
 
         subtotal += priceToUse * cartItems.quantity
 
@@ -17,13 +17,13 @@ const calculateProductTotal = (cart) => {
     let productTotal = []
 
     for (const cartItems of cart) {
-        const priceToUse = cartItems.product.salePrice !== 0 ? cartItems.product.salePrice : cartItems.product.discount_Price
-       
-        const total = priceToUse* cartItems.quantity;
+        const priceToUse = cartItems.product.salePrice !== 0 ? cartItems.product.salePrice : cartItems.product.offerPrice
+
+        const total = priceToUse * cartItems.quantity;
 
         productTotal.push(total)
 
-    } 
+    }
 
     return productTotal
 }

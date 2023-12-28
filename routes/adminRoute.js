@@ -56,6 +56,8 @@ adminRoute.get("/orders",adminAuth.isLogin,orderController.loadOrders)
 adminRoute.get("/orderList",adminAuth.isLogin,orderController.listOrder)
 adminRoute.get("/orderStatusChange",adminAuth.isLogin,orderController.orderStatusChange)
 adminRoute.get("/salesReport",adminAuth.isLogin,orderController.loadSalesReport)
+adminRoute.get("/salesReport/:start/:end", adminAuth.isLogin, orderController.dateFilter);
+
 
 
 
@@ -87,11 +89,10 @@ adminRoute.post("/updateBanner",multer.uploadCategory.single('image'),bannerCont
 adminRoute.get("/deleteBanner/:id",adminAuth.isLogin,bannerController.deleteBanner)
 
 // offer 
-// adminRoute.get("/loadOfferAdd",adminAuth.isLogin,offerController.loadOfferAdd)
-// adminRoute.get("/loadOfferList",adminAuth.isLogin,offerController.loadOfferList)
-// adminRoute.post("/addOffer",offerController.addOffer)
-// adminRoute.get("/loadEditOffer",adminAuth.isLogin,offerController.loadOfferEdit)
-
+adminRoute.get("/loadProductOffer",adminAuth.isLogin,offerController.loadProductOffer)
+adminRoute.post("/updateOffer",offerController.updateProductOffer)
+adminRoute.get("/loadCategoryOffer",adminAuth.isLogin,offerController.loadCategoryoffer)
+adminRoute.post("/updateCategoryOffer",offerController.updateCategoryOffer)
 
 
 

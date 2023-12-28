@@ -94,7 +94,7 @@
                             </thead>
                             <tbody>
                                 <% let subtotal=0; order.items.forEach(function(item) { 
-                                   let total=item.product.discount_Price * item.quantity; subtotal +=total; %>
+                                   let total=item.product.offerPrice * item.quantity; subtotal +=total; %>
                                         <tr>
                                             <td>
                                                 <a class="itemside" href="#">
@@ -108,7 +108,7 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                ₹<%=item.product.discount_Price %>
+                                                ₹<%=item.product.offerPrice %>
                                             </td>
                                             <td>
                                                 <%=item.quantity %>

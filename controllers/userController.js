@@ -8,6 +8,7 @@ const { AwsPage } = require("twilio/lib/rest/accounts/v1/credential/aws");
 const multer = require("../middlewares/multer")
 const Cart = require("../model/cartModel")
 const Banner = require('../model/bannerModel')
+const Wishlist = require("../model/wishListModel")
 
 
 const securePassword = async (password) => {
@@ -232,12 +233,20 @@ const verifyLogin = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 const loadHome = async (req, res) => {
   try {
     const userData =  req.session.user_id;
     const productData= await Product.find(); 
     const banner = await Banner.find()
-    res.render("user/home", {  products:productData, userData,banner });
+
+    const cartCount = await Cart.find({user:userData})
+
+    const wishList = await Wishlist.find({user:userData})
+
+console.log(wishList,"wishList");
+    res.render("user/home", {  products:productData, userData,banner,wishList,cartCount});
   } catch (error) {
     console.log(error.message);
   }
@@ -270,14 +279,19 @@ const loadItems = async (req, res) => {
      
       const categoryFilter = selectedCategory ? { category: selectedCategory } : {};
 
+      const wishList = await Wishlist.find({user:userData})
+
+      const cartCount = await Cart.find({user:userData})
+       
+      
       
       
       const sort = req.query.sort
       let sortOption = {};
       if (sort === 'asc') {
-          sortOption = { discount_Price: 1 }; 
+          sortOption = { offerPrice: 1 }; 
       } else if (sort === 'dsc') {
-          sortOption = { discount_Price: -1 }; 
+          sortOption = { offerPrice: -1 }; 
       } else {
           
           sortOption = {};
@@ -304,7 +318,9 @@ const loadItems = async (req, res) => {
           category: categoryData,
           selectedCategory: selectedCategory, 
           totalPages:totalPages,
-          currentPage:productData.page
+          currentPage:productData.page,
+          wishList,
+          cartCount
       });
   } catch (error) {
       console.log(error);
@@ -361,6 +377,9 @@ const singleItems = async (req, res) => {
     const id = req.query.id
     const productData = await Product.findById({ _id: id })
 
+    const wishList = await Wishlist.find({user:userData})
+    const cartCount = await Cart.find({user:userData})
+
     let existingCartItem = false;
 
     const existingCart = await Cart.findOne({ user: req.session.user_id }) // Use req.session.user_id to find the cart for the current user
@@ -372,7 +391,7 @@ const singleItems = async (req, res) => {
       }
     }
 
-    res.render("user/singleItems", { user: userData, products: productData, existingCartItem })
+    res.render("user/singleItems", { user: userData, products: productData, existingCartItem,wishList,cartCount })
   } catch (error) {
     console.log(error.message);
   }
@@ -390,10 +409,13 @@ const userProfile = async(req,res)=>{
     const userData = await User.findById({_id:id})
     const addressData = await Address.find({user:id})
 
+    const wishList = await Wishlist.find({user:id})
+    const cartCount = await Cart.find({user:id})
+
     
     
     
-    res.render("user/userProfile",{user:userData,address:addressData})
+    res.render("user/userProfile",{user:userData,address:addressData,wishList,cartCount})
     
   } catch (error) {
     console.log(error.message);
@@ -405,6 +427,8 @@ const userProfile = async(req,res)=>{
 
 const loadForgetPassword = async(req,res)=>{
   try {
+
+    
 
     res.render("user/forget")
     
@@ -522,8 +546,11 @@ const loadEditUser = async(req,res)=>{
     const userId = req.session.user_id
     const userData = await User.findById(userId)
 
+    const wishList = await Wishlist.find({user:userId})
+    const cartCount = await Cart.find({user:userId})
+
     if(userData){
-      res.render("user/editUserProfile",{userData})
+      res.render("user/editUserProfile",{userData,wishList,cartCount})
     }else{
       res.render("user/login")
     }
@@ -665,27 +692,114 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const updateUserProfilepic = async (req, res) => {
-  try{
+  const updateUserProfilepic = async (req, res) => {
+    try{
 
-    console.log("AAAAAAAAAAAAAAAAA");
+      console.log("AAAAAAAAAAAAAAAAA");
 
-    const userData = await User.findById({ _id: req.session.user_id });
-    const productData = await Product.find(); 
-    const addressData = await Address.find();
-    
-    const croppedImage = req.file.filename;
-    
-    await User.findByIdAndUpdate({ _id: userData.id },{
-      $set: {
-        image: croppedImage,
-      },
-    })
-    res.status(200).json({ success: true, message: 'Profile Picture changed' });
-  } catch (error) {
-    console.log(error);
+      const userData = await User.findById({ _id: req.session.user_id });
+      const productData = await Product.find(); 
+      const addressData = await Address.find();
+      
+      const croppedImage = req.file.filename;
+      
+      await User.findByIdAndUpdate({ _id: userData.id },{
+        $set: {
+          image: croppedImage,
+        },
+      })
+      res.status(200).json({ success: true, message: 'Profile Picture changed' });
+    } catch (error) {
+      console.log(error);
+    }
   }
-}
+
+
+  const loadAbout = async(req,res)=>{
+    try {
+
+
+      const userId = req.session.user_id
+      const userData = await User.findById(userId)
+
+      const cartCount = await Cart.find({user:userId})
+
+      const wishList = await Wishlist.find({user:userId})
+
+      res.render("user/about",{cartCount,wishList})
+
+      
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  const loadContact = async(req,res)=>{
+    try {
+      
+      const userId = req.session.user_id
+      const userData = await User.findById(userId)
+
+      const cartCount = await Cart.find({user:userId})
+
+      const wishList = await Wishlist.find({user:userId})
+
+      res.render("user/contact",{cartCount,wishList})
+
+
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  const filterByPrice = async(req, res) => {
+    try {
+      // Retrieve the selected price range from the form data
+
+      const user = await User.findById(req.session.user_id)
+      const products = await Product.find({})
+
+      const wishList = await Wishlist.find({user:user})
+      const cartCount = await Cart.find({user:user})
+
+
+
+      const selectedRange = req.body.price_range;
+
+      console.log(selectedRange);
+  
+      // Implement logic to filter data based on the selectedRange
+      let filteredData = [];
+  
+      switch (selectedRange) {
+        case 'range1':
+          filteredData = products.filter(item => item.offerPrice <= 1000);
+          break;
+        case 'range2':
+          filteredData = products.filter(item => item.offerPrice > 1000 && item.offerPrice <= 2000);
+          break;
+        case 'range3':
+          filteredData = products.filter(item => item.offerPrice > 2000 && item.offerPrice <= 5000);
+          break;
+        case 'range4':
+          filteredData = products.filter(item => item.offerPrice > 5000);
+          break;
+        default:
+          // Handle other cases or set a default behavior
+          break;
+      }
+console.log(filteredData,"aaaaaa");
+  
+      // Send the filtered data back to the client
+      res.json(filteredData);
+      // res.render("user/items",{filteredData,wishList,cartCount})
+    
+    } catch (error) {
+      console.error('Error filtering data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 
 
 
@@ -714,6 +828,9 @@ module.exports = {
   changePassword,
   editPassword,
   updateProfile,
-  updateUserProfilepic
+  updateUserProfilepic,
+  loadAbout,
+  filterByPrice,
+  loadContact
  
 };

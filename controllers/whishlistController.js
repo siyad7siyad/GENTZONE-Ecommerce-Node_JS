@@ -1,5 +1,6 @@
 
 const Wishlist = require("../model/wishListModel")
+const Cart = require("../model/cartModel")
 
 // load wishlist page
 
@@ -12,10 +13,13 @@ const loadWishlist = async(req,res)=>{
     const userWishlist = await Wishlist.findOne({user:userId}).populate("items.product")
 
     const userWishlistItems = userWishlist?userWishlist.items:[]
+
+    const wishList = await Wishlist.find({user:userId})
+    const cartCount = await Cart.find({user:userId})
     
     
 
-    res.render("user/wishList",{User,Wishlist:userWishlistItems,})
+    res.render("user/wishList",{User,Wishlist:userWishlistItems,wishList,cartCount})
     
         
     } catch (error) {

@@ -5,14 +5,16 @@ const Cart = require("../model/cartModel")
 const User = require("../model/userModel")
 const Coupon = require("../model/couponModel")
 const swal = require('sweetalert2');
+const Wishlist = require("../model/wishListModel")
+require("dotenv").config()
 
 
 const {calculateSubtotal,calculateProductTotal} = require("../config/cartFunctions")
 const razorPay = require("razorpay")
 
 var instance = new razorPay({
-    key_id:"rzp_test_44UydPbnSvDtHK",
-    key_secret:"lKgZbdAkb13mq0UzhkJ4178f",       
+    key_id:process.env.KEY_ID,
+    key_secret:process.env.KEY_SECRET,       
 })
 
 // load checkout page
@@ -23,6 +25,9 @@ const loadCheckOut = async(req,res)=>{
 
         const userId = req.session.user_id
 
+        
+        const wishList = await Wishlist.find({user:userId})
+        const cartCount = await Cart.find({user:userId})
         const coupon  = await Coupon.find()
         const userData = await User.findById(userId)
 
@@ -45,7 +50,7 @@ const loadCheckOut = async(req,res)=>{
 
         const addressData = await Address.find({user:userId})
 
-        res.render("user/checkOut",{userData,addressData,subtotalWithShipping,productTotal,cart:cartItems,coupon})
+        res.render("user/checkOut",{userData,addressData,subtotalWithShipping,productTotal,cart:cartItems,coupon,wishList,cartCount})
 
         
         
@@ -81,7 +86,7 @@ const razorPayLoad = async(req,res)=>{
         const totalAmount = cartItems.reduce(
           (acc, item) =>
               acc +
-              ((item.product.salePrice !== 0 ? item.product.salePrice : item.product.discount_Price) *
+              ((item.product.salePrice !== 0 ? item.product.salePrice : item.product.offerPrice) *
                   item.quantity ||
                   0),
           0
@@ -154,7 +159,7 @@ const razorPayLoad = async(req,res)=>{
         const totalAmount = cartItems.reduce(
           (acc, item) =>
               acc +
-              ((item.product.salePrice !== 0 ? item.product.salePrice : item.product.discount_Price) *
+              ((item.product.salePrice !== 0 ? item.product.salePrice : item.product.offerPrice) *
                   item.quantity ||
                   0),
           0
@@ -176,7 +181,7 @@ const razorPayLoad = async(req,res)=>{
         items: cartItems.map((cartItem) => ({
           product: cartItem.product._id,
           quantity: cartItem.quantity,
-          price: cartItem.product.discount_Price,
+          price: cartItem.product.offerPrice,
         })),
       });
     
@@ -198,7 +203,7 @@ const razorPayLoad = async(req,res)=>{
         product: cartItem.product._id,
         quantity: cartItem.quantity,
      
-        price: cartItem.product.discount_Price,
+        price: cartItem.product.offerPrice,
       })),
     });
   
@@ -222,7 +227,7 @@ const razorPayLoad = async(req,res)=>{
           product: cartItem.product._id,
           quantity: cartItem.quantity,
        
-          price: cartItem.product.discount_Price,
+          price: cartItem.product.offerPrice,
         })),
       });
 
@@ -267,6 +272,9 @@ const loadOrderDetails = async(req,res)=>{
         const userId = req.session.user_id
         const userData = await User.findById(userId)
 
+        const wishList = await Wishlist.find({user:userId})
+        const cartCount = await Cart.find({user:userId})
+
         const order = await Order.find({user:userData._id}).populate('user')
         .populate({
             path:"items.product",
@@ -274,7 +282,7 @@ const loadOrderDetails = async(req,res)=>{
         })
 
         if(userData){
-            res.render("user/order",{userData,order})
+            res.render("user/order",{userData,order,wishList,cartCount})
         }else{
             res.redirect("/login")
         }
@@ -293,6 +301,10 @@ const loadOrderHistory = async(req,res)=>{
 
         const userId = req.session.user_id
         const orderId = req.params.id
+
+        const wishList = await Wishlist.find({user:userId})
+        const cartCount = await Cart.find({user:userId})
+
         const userData = await User.findById(userId)
         const order = await Order.findById(orderId)
         .populate("user")
@@ -304,7 +316,7 @@ const loadOrderHistory = async(req,res)=>{
             model:"Product"
         })
 
-        res.render("user/OrderDetails",{userData,order})
+        res.render("user/OrderDetails",{userData,order,wishList,cartCount})
 
 
         
@@ -400,7 +412,7 @@ const returnOrder = async(req,res)=>{
     await user.save()
     await order.save()
 
-    res.status(200).json({ success: true, message: "return sucessfully" });
+      res.status(200).json({ success: true, message: "return sucessfully" });
   } catch (error) {
     console.log(error.message);
   }
@@ -439,9 +451,9 @@ console.log(!existCoupon);
 
       for (const cartItem of cart.items) {
           const product = await Product.findById(cartItem.product._id);
-          const discountAmount = (existCoupon.discountPercentage / 100) *product.discount_Price 
+          const discountAmount = (existCoupon.discountPercentage / 100) *product.offerPrice
           // Ensure that 'product' is a mongoose document
-          product.salePrice = product.discount_Price - discountAmount 
+          product.salePrice = product.offerPrice - discountAmount 
           await product.save();
       }
       
