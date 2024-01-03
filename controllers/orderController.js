@@ -13,8 +13,8 @@ const {calculateSubtotal,calculateProductTotal} = require("../config/cartFunctio
 const razorPay = require("razorpay")
 
 var instance = new razorPay({
-    key_id:process.env.KEY_ID,
-    key_secret:process.env.KEY_SECRET,       
+    key_id:"rzp_test_44UydPbnSvDtHK",
+    key_secret:"lKgZbdAkb13mq0UzhkJ4178f",       
 })
 
 // load checkout page
