@@ -86,10 +86,18 @@
 
                                 <div class="col-md-6  mb-3">
                                     <label class="form-label">Product Color</label>
-                                    <input type="text" name="productColor" placeholder="Type here" class="form-control"
+                                    <input type="text" val name="productColor" placeholder="Type here" class="form-control"
                                         id="product_color">
                                     <div class="error-message" style="color: red;" id="product_color-error"></div>
                                 </div>
+
+                                <div class="col-md-6  mb-3">
+                                    <label class="form-label">Stock</label>
+                                    <input type="number" name="stock" placeholder="Type here" class="form-control"
+                                       min="1" >
+                                    <div class="error-message" style="color: red;" id="product_color-error"></div>
+                                </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label for="inputAddress2" class="form-label">gender</label>
                                     <select name="gender"  class="form-control">

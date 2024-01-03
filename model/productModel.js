@@ -25,6 +25,10 @@ const Product =new mongoose.Schema({
     required:true
   },
 
+  stock:{
+    type:Number
+  },
+
     
   price: {
     type: Number,
@@ -32,7 +36,7 @@ const Product =new mongoose.Schema({
   },
   sizes:[{
     size:String,
-    stock:Number
+  
   }],
   productColor:{
     type:String,

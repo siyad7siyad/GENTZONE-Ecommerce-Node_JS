@@ -43,7 +43,7 @@ const addProduct = async(req,res)=>{
       
       const image = req.files.map((x)=>x.filename)
       
-      const {name,categoryData,price,discountPrice,productColor,gender,brand,description}=req.body
+      const {name,categoryData,price,discountPrice,productColor,gender,brand,description,stock}=req.body
       const existingProduct = await Product.findOne({name:name})
       if(existingProduct){
         res.render('addCategory',{error:"Product with same name is already exist"})}else{
@@ -57,7 +57,8 @@ const addProduct = async(req,res)=>{
               gender:gender,
               brand:brand,
               description:description,
-              image
+              image,
+              stock
           })
           await addProducts.save()
     
@@ -103,6 +104,7 @@ const updateProduct = async(req,res)=>{
       gender,
       brand,
       description,
+      stock
     } = req.body;
 
     if (req.body.deletecheckbox) {
@@ -159,6 +161,7 @@ const updateProduct = async(req,res)=>{
           brand,
           description,
           image:images,
+          stock
         },
       }
     );

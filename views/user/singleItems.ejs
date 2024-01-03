@@ -162,7 +162,12 @@
 
                                             <div class="detail-extralink">
 
-                                                <input type="number" name="qty" class="w-25 py-4" value="1" min="1"
+                                                <% if (products.stock==0) { %>
+
+                                                    <p class="text-danger">OUT OF STOCK</p>
+                                                 
+                                                <% }else{ %>
+                                                    <input type="number" name="qty" class="w-25 py-4" value="1" min="1"
                                                     max="10">
                                                 <div class="product-extra-link2 w-50 my-1">
 
@@ -176,6 +181,10 @@
                                                     </a> -->
 
                                                 </div>
+
+<% } %>
+
+                                               
                                             </div>
 
                                         </form>

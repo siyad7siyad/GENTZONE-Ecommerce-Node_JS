@@ -185,6 +185,13 @@ const razorPayLoad = async(req,res)=>{
         })),
       });
     
+      for (const cartItem of cartItems) {
+        const product = cartItem.product;
+        console.log(product, "aaa");
+        product.stock -= cartItem.quantity;
+        await product.save();
+      }
+
       await order.save();
   
     // Redirect the user to the Razorpay checkout page
@@ -207,7 +214,16 @@ const razorPayLoad = async(req,res)=>{
       })),
     });
   
-    await order.save();
+
+    for (const cartItem of cartItems) {
+      const product = cartItem.product;
+      console.log(product, "aaa");
+      product.stock -= cartItem.quantity;
+      await product.save();
+    }
+  await order.save();
+ 
+
   }else if(paymentMethod=="wallet"){
 
     if(totalAmount<=user.walletBalance){
@@ -231,8 +247,16 @@ const razorPayLoad = async(req,res)=>{
         })),
       });
 
-      await order.save()
-      
+
+      for (const cartItem of cartItems) {
+        const product = cartItem.product;
+        console.log(product, "aaa");
+        product.stock -= cartItem.quantity;
+        await product.save();
+      };
+
+    await order.save()
+
 
     }else{
       return res.status(500).json({ success: false, error: "insuficient balance." });
@@ -244,6 +268,7 @@ const razorPayLoad = async(req,res)=>{
 
   cart.items.forEach(cartItem => {
     const product = cartItem.product;
+
 
     // Set sale_price to zero
     product.salePrice = 0;

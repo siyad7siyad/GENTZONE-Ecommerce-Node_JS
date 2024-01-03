@@ -134,36 +134,28 @@
                 </div>
               </td>
               <td>
-    <%
-    const productStock1 = product.sizes.map(value => value.stock);
-
-    const productStock = productStock1.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
- 
-    %>
-        <p class="fw-bold mb-1"><%= productStock %></p>
-    <%
+                <%= product.stock %>
+              
     
-    %>
 </td>
 
 
           <td>
        
-            <% if(productStock>20){
+            <% if(product.stock>20){
                               %>
                               <span class="badge rounded-pill alert-success ">
                                 Published
                                 </span>
                               <%
-                            }else if(productStock==0){
+                            }else if(product.stock==0){
                               %>
                               <span class=" badge rounded-pill alert-danger ">
                         out of stock
                       </span>
                               <%
                             }
-                            else if(productStock<20){
+                            else if(product.stock<20){
                               %>
                               <span class="badge rounded-pill alert-warning ">
                               low stock

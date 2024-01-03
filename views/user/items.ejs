@@ -90,20 +90,20 @@
                         </div>
 
                       </div>
-                      <!-- <form id="myForm" action="/cart" method="post">                   
-                                    <div class="product-action-1 show">
-                                        <input type="hidden" value="<%= product._id %>" name="productData_id"> 
-                                        <input type="hidden" value="1" name="qty">
-                                        <button type="submit" aria-label="Add To Cart"  class="action-btn hover-up" >
-                                            <i class="fi-rs-shopping-bag-add"></i>
-                                        </button>
-                                    </div>
-                                </form> -->
+
+                      <% if(product.stock==0){ %>
+
+                        <p class="text-danger">Out Of Stock</p>
+
+                        <%}%>
 
 
                     </div>
 
                   </div>
+
+
+
                   <% } %>
                     <% } else { %>
                       <tr>

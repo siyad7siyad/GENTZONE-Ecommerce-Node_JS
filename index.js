@@ -26,12 +26,11 @@ app.use(session({
   saveUninitialized:true
 }))
 
-// app.use((req, res, next) => {
-//   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-//   res.setHeader('Pragma', 'no-cache');
-//   res.setHeader('Expires', '0');
-//     next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate,private');
+
+    next();
+});
 
 app.set("view engine","ejs")
 app.set("views","./views")

@@ -21,7 +21,7 @@ userRoute.get('/login',userAuth.isLogout,userController.loadLogin);
 userRoute.post('/login',userController.verifyLogin);
 
 // home page
-userRoute.get('/',userController.loadHome);
+userRoute.get('/',userAuth.isLogin,userController.loadHome);
 userRoute.get("/about",userAuth.isLogin,userController.loadAbout)
 userRoute.get("/items",userAuth.isLogin,userController.loadItems)
 userRoute.get("/single-items",userAuth.isLogin,userController.singleItems)
