@@ -1,63 +1,50 @@
-const nodemailer = require('nodemailer')
-require("dotenv").config
+const nodemailer = require('nodemailer');
+require("dotenv").config(); // Add the function call here to load environment variables
 
+const sendVarifyMail = async (req, email) => {
+  try {
+    console.log("fgdgffdf");
+    const otp = generateOTP(4);
+    req.session.otp = otp;
+    console.log(req.session.otp, "otp");
 
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASSWORD,
+      },
+    });
 
-  const sendVarifyMail = async (req,email) => {
-    try {
- console.log("fgdgffdf");
-      const otp = generateOTP(4); 
-   
-      req.session.otp = otp;
-;   console.log( req.session.otp,"otp")
-      const transporter = nodemailer.createTransport({
-  
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        requireTLS: true,
-        auth: {
-          user: process.env.USER,
-          pass: process.env.PASSWORD,
-        },
-      });
-  
-      const mailOptions = {
-        from: 'pigabo40@gmail.com',
-        to: email,
-        subject: 'For verification purpose',
-        html: `<p>Hello , please enter this OTP: <strong>${otp}</strong> to verify your email.</p>`,
-      };
-  
-       const information=await  transporter.sendMail( mailOptions);
-      //  console.log(information.messageId,"klkkk");
-    } catch (error) {
-      console.log(error);
-    }
-   
-  };
+    const mailOptions = {
+      from: "pigabo40@gmail.com",
+      to: email,
+      subject: 'For verification purpose',
+      html: `<p>Hello, please enter this OTP: <strong>${otp}</strong> to verify your email.</p>`,
+    };
 
-  
-  
-  
-  
-  function generateOTP(length) {
-      const characters = '0123456789'; // The characters to use for the OTP
-      let otp = '';
+    const information = await transporter.sendMail(mailOptions);
     
-      for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        otp += characters[randomIndex];
-      }
-    
-      return otp;
-    }
-  
-  
-
-  
-  module.exports= {
-  
-    sendVarifyMail,
- 
+  } catch (error) {
+    console.error(error);
   }
+};
+
+function generateOTP(length) {
+  const characters = '0123456789';
+  let otp = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    otp += characters[randomIndex];
+  }
+
+  return otp;
+}
+
+module.exports = {
+  sendVarifyMail,
+};

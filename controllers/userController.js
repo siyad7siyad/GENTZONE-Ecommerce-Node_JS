@@ -98,7 +98,7 @@ const loadOtp = async (req, res) => {
     const userData = req.session.userData;
     const email = userData.email;
     const data=await message.sendVarifyMail(req,email);
-    res.render("user/otp");
+    res.render("user/otp",);
   } catch (error) {
     console.log(error.message);
   }
