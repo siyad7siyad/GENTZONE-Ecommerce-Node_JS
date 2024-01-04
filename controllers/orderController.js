@@ -341,7 +341,7 @@ const loadOrderHistory = async(req,res)=>{
             model:"Product"
         })
 
-        res.render("user/OrderDetails",{userData,order,wishList,cartCount})
+        res.render("user/orderDetails",{userData,order,wishList,cartCount})
 
 
         

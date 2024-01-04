@@ -17,13 +17,13 @@ require("dotenv").config
         secure: false,
         requireTLS: true,
         auth: {
-          user: process.env.AUTH_EMAIL,
-          pass: process.env.AUTH_PASSWORD,
+          user: process.env.USER,
+          pass: process.env.PASSWORD,
         },
       });
   
       const mailOptions = {
-        from: 'mailernode54@gmail.com',
+        from: 'pigabo40@gmail.com',
         to: email,
         subject: 'For verification purpose',
         html: `<p>Hello , please enter this OTP: <strong>${otp}</strong> to verify your email.</p>`,
@@ -52,9 +52,6 @@ require("dotenv").config
     
       return otp;
     }
-  
-  
-  
   
   
 
