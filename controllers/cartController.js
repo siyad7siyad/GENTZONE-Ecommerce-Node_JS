@@ -53,12 +53,12 @@ const loadCartPage = async (req, res) => {
                     }
                 }
                
-                res.render("user/cart", { userData, productTotal, subtotalWithShipping, outOfStockError, maxQuantityError, cart, wishList, cartCount })
+                res.render("user/cart", { userData, productTotal, subtotalWithShipping, outOfStockError, maxQuantityError, cart, wishList,cartCount  })
 
 
 
             } else {
-                res.render("user/cart", { userData, cart: null })
+                res.render("user/cart", { userData, cart: null,subtotalWithShipping:0,wishList,cartCount })
             }
 
         } else {
@@ -85,8 +85,7 @@ const addToCart = async (req, res) => {
       
             // Product is in the wishlist, proceed to add it to the cart
 
-            const existingCart = await Cart.findOne({ user: userId });
-
+            const existingCart = await Cart.findOne({ user: userId }).populate("items.product");
             if (existingCart) {
                 const existingCartItem = existingCart.items.find((item) => item.product.toString() === productId);
 
@@ -115,9 +114,17 @@ const addToCart = async (req, res) => {
             // Redirect to the cart page after adding the product
             res.redirect("/cart");
         } else {
+
+         
+            const newCart = new Cart({
+                user: userId,
+                items: [{ product: productId, quantity: parseInt(qty) }],
+                total: parseInt(qty, 10),
+              });
             // Product is not in the wishlist
-            console.log('Product is not in the wishlist');
-            // Handle accordingly (e.g., show an error message)
+            await newCart.save();
+            res.redirect("/cart");
+
         }
     } catch (error) {
         console.log("Adding cart product error", error);

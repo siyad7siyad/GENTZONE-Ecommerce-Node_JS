@@ -37,16 +37,17 @@ const user = mongoose.Schema({
   referralCode:{
     type:String,
     default:randomRefferalCode,
-    // unique:true
+    unique:true
   },
-  
-  userRefered: {
-    type: [{
-      type: String,
-      unique: true
-    }],
-    default: []
-  }
+//   userReferred: [{
+//     type: String,
+//     unique: true,
+// }],
+  userRefered:  [{
+    type: String,
+    unique: true,
+    default:null,
+}],
 })
 
 function randomRefferalCode() {

@@ -36,6 +36,7 @@ const loadRegister = async (req, res) => {
 const insertUser = async (req, res) => {
   try {
   
+    const referral = req.query.referralCode
 
     const email = req.body.email;
     const mobile = req.body.mobile;
@@ -62,11 +63,11 @@ const insertUser = async (req, res) => {
       referror = await User.findOne({referralCode})
 
       if(!referror){
-        res.render("user/register",{message:"invalid referal code"})
+        res.render("user/register",{message:"invalid referal code",referral})
       }
 
       if(referror.userRefered.includes(req.body.email)){
-        res.render("user/register",{message:"this referal code is already exist"})
+        res.render("user/register",{message:"this referal code is already exist",referral})
 
       }
 
@@ -75,7 +76,7 @@ const insertUser = async (req, res) => {
 
 
     if (existMail) {
-      res.render("user/register", { message: "this user already exists" });
+      res.render("user/register", { message: "this user already exists",referral });
     } else {
    
       req.session.userData = req.body;
@@ -98,7 +99,7 @@ const loadOtp = async (req, res) => {
     const userData = req.session.userData;
     const email = userData.email;
     const data=await message.sendVarifyMail(req,email);
-    res.render("user/otp",);
+    res.render("user/otp");
   } catch (error) {
     console.log(error.message);
   }
@@ -137,15 +138,26 @@ console.log(firstDigit)
         
         }
 
-        const referror = await User.findOne({
-          referralCode :req.session.referralCode
-        })
-        const userData = await User.findOne({ _id: req.session.user_id });
-        referror.userRefered.push(user.email) 
-        referror.walletBalance +=100
-        await referror.save()
+        // const referror = await User.findOne({
+        //   referralCode :req.session.referralCode
+        // })
+        // const userData = await User.findOne({ _id: req.session.user_id });
+        // referror.userRefered.push(user.email) 
+        // referror.walletBalance +=100
+        // await referror.save()
 
-      
+        const referror = await User.findOne({
+          referralCode: req.session.referralCode
+        });
+        
+        const userData = await User.findOne({ _id: req.session.user_id });
+        
+        if (referror) {
+          referror.userRefered.push(user.email);
+          referror.walletBalance += 100;
+          await referror.save();
+        }
+        
 
 
 
