@@ -14,8 +14,8 @@ const sendVarifyMail = async (req, email) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: process.env.USER,
-        pass: process.env.PASSWORD,
+        user:"pigabo40@gmail.com",
+        pass: 'wvcvtpuoeqzoghle'
       },
     });
 
